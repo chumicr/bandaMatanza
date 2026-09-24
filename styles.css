@@ -120,7 +120,17 @@ main{overflow:hidden}.page{max-width:1320px;padding:104px clamp(24px,5vw,72px) 1
 .enrollment-form .tutor-field[hidden]{display:none}.adult-toggle{background:#f1faed;border:1px solid #dcebd7;border-radius:12px;padding:12px 14px;color:#315d2a!important}.adult-toggle input{accent-color:#6ca653}
 .enrollment-form .instrument-choice[hidden]{display:none}
 .enrollment-form.was-validated input:invalid,.enrollment-form.was-validated select:invalid,.enrollment-form.was-validated textarea:invalid{border-color:#d85d5d;background:#fff6f6;box-shadow:0 0 0 3px rgba(216,93,93,.12)}.enrollment-form.was-validated .form-check:has(input:invalid){color:#b84444!important}.enrollment-form input:valid,.enrollment-form select:valid,.enrollment-form textarea:valid{border-color:#d9e8d4}
+.enrollment-form input.has-error,.enrollment-form select.has-error,.enrollment-form textarea.has-error{border-color:#d85d5d;background:#fff6f6;box-shadow:0 0 0 3px rgba(216,93,93,.12)}
 .field-error{display:block;color:#c44747;font-size:11px;font-weight:700;margin-top:5px}.enrollment-form.was-validated .form-check .field-error{margin-left:4px}
+.enrollment-form input[type="date"]{appearance:auto;min-height:48px;padding-right:72px;background:#fbfefa url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='22' height='22' viewBox='0 0 24 24' fill='none' stroke='%234f8740' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3.5' y='4.5' width='17' height='16' rx='3' fill='%23e6f6df'/%3E%3Cpath d='M7.5 3v3M16.5 3v3M3.5 9.5h17'/%3E%3Cpath d='M8 13h.01M12 13h.01M16 13h.01M8 16.5h.01M12 16.5h.01' stroke-width='2.4'/%3E%3C/svg%3E") no-repeat right 43px center;background-size:22px;color:#315d2a;color-scheme:light;accent-color:#6ca653}
+.enrollment-form input[type="date"]:focus{background:#f1faed}
+.enrollment-form input[type="date"]::-webkit-datetime-edit{color:#315d2a}
+.enrollment-form input[type="date"]::-webkit-calendar-picker-indicator{opacity:0;cursor:pointer;width:31px;height:31px;padding:0;margin-right:2px}
 .reveal{opacity:1;transform:none;transition:none}@media(min-width:901px){.reveal{opacity:0;transform:translateY(14px);transition:opacity .6s ease,transform .6s ease}.reveal.is-visible{opacity:1;transform:none}}
 @media(max-width:900px){.page,.hero{animation:none}}
 .enrollment-year strong{font-size:clamp(40px,5vw,64px);letter-spacing:-.04em;white-space:nowrap}
+
+/* Tipografía editorial: titulares con más personalidad y texto funcional más limpio. */
+body{font-family:"Plus Jakarta Sans","DM Sans",sans-serif}
+h1,h2,h3,h4,h5,h6,.display,.brand strong,.enrollment-year strong{font-family:"Lora","Playfair Display",serif!important;font-weight:500}
+.menu-toggle{font-family:"Plus Jakarta Sans","DM Sans",sans-serif}

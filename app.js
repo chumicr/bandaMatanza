@@ -114,11 +114,12 @@ const templates = {
   'solicitud-matricula': () => {
     const now = new Date();
     const month = now.getMonth() + 1;
-    const day = now.getDate();
     const courseStart = month >= 6 ? now.getFullYear() : now.getFullYear() - 1;
     const courseLabel = `${courseStart}—${courseStart + 1}`;
-    const previewClosed = new URLSearchParams(location.search).get('matricula') === 'cerrada';
-    const open = !previewClosed && month >= 6 && (month < 11 || (month === 10 && day <= 31));
+    // Solo se fuerza el cierre en una previsualización explícita.
+    // La URL normal siempre respeta el calendario real de matrícula.
+    const previewClosed = new URLSearchParams(location.search).get('preview') === 'closed';
+    const open = !previewClosed && month >= 6 && month <= 10;
     const status = open
       ? `<div class="enrollment-status is-open"><span class="status-dot"></span><div><strong>Preinscripción abierta</strong><small>Disponible hasta el 31 de octubre de ${now.getFullYear()}</small></div></div>`
       : `<div class="enrollment-status is-closed"><span class="status-dot"></span><div><strong>Periodo cerrado</strong><small>La matrícula vuelve a estar disponible del 1 de junio al 31 de octubre.</small></div></div>`;
@@ -126,6 +127,7 @@ const templates = {
     return page(`<div class="enrollment-page-head"><div><p class="eyebrow">Escuela · Solicitud de matrícula</p><h1>Empieza tu<br><em>camino musical.</em></h1><p>Cuéntanos quién eres y qué te gustaría aprender. Te orientaremos sobre horarios, instrumentos y agrupaciones.</p></div><div class="enrollment-year"><strong>${courseLabel}</strong></div></div>${status}<div class="enrollment-panel"><div class="enrollment-panel-head"><div><span class="pill">Asociación Musical La Matanza</span><h2>Solicitud de matrícula</h2></div><p>Una primera conversación para encontrar tu lugar en la escuela.</p></div>${form}</div>`, 'page enrollment-page');
   },
   privacidad: () => page(title('Matrícula · Información', 'Privacidad y condiciones.', 'Antes de enviar tu solicitud, consulta cómo utilizaremos los datos que nos facilites.' ) + `<div class="paper prose privacy-content"><h2>Información de matrícula</h2><p>Los datos enviados a través de este formulario se utilizarán únicamente para gestionar la solicitud de matrícula, contactar contigo y organizar la actividad formativa de la Asociación Musical “Ntra. Sra. del Remedio” La Matanza.</p><h2>Tratamiento de datos</h2><p>La asociación conservará la información durante el tiempo necesario para atender tu solicitud y cumplir sus obligaciones administrativas. No se cederán datos a terceros salvo obligación legal.</p><h2>Tus derechos</h2><p>Puedes solicitar el acceso, rectificación o eliminación de tus datos escribiendo a <a href="mailto:bandalamatanza@gmail.com">bandalamatanza@gmail.com</a>.</p><a class="btn btn-light" href="#solicitud-matricula">Volver al formulario</a></div>`),
+  'alta-socio': () => page(`<div class="enrollment-page-head"><div><p class="eyebrow">Asociación · Alta de socio</p><h1>Forma parte de<br><em>la asociación.</em></h1><p>Completa tus datos para solicitar el alta como socio de la Asociación Musical “Ntra. Sra. del Remedio” La Matanza.</p></div><div class="enrollment-year"><strong>2026</strong></div></div><div class="enrollment-status is-open"><span class="status-dot"></span><div><strong>Solicitud de alta</strong><small>Revisaremos tus datos y contactaremos contigo para confirmar el registro.</small></div></div><div class="enrollment-panel member-form-panel"><div class="enrollment-panel-head"><div><span class="pill">Ficha de inscripción</span><h2>Datos del socio/a</h2></div><p>Los campos son obligatorios para poder tramitar la solicitud.</p></div><form class="enrollment-form member-form" novalidate><div class="form-grid"><label>Nombre<input required name="nombre" autocomplete="given-name" placeholder="Tu nombre" /></label><label>Apellidos<input required name="apellidos" autocomplete="family-name" placeholder="Tus apellidos" /></label><label>Fecha de nacimiento<input required type="date" name="nacimiento" /></label><label>DNI/NIF/NIE<input required name="dni" placeholder="12345678A" /></label><label class="form-full">Dirección<input required name="direccion" autocomplete="street-address" placeholder="Calle y número" /></label><label>Población<input required name="poblacion" value="La Matanza - Orihuela" /></label><label>Provincia<input required name="provincia" value="Alicante" /></label><label>Código postal<input required name="codigo-postal" value="03316" inputmode="numeric" pattern="[0-9]{5}" /></label><label>Teléfono<input required type="tel" name="telefono" autocomplete="tel" pattern="[6789][0-9]{8}" placeholder="600 000 000" /></label><label>Email<input required type="email" name="email" autocomplete="email" placeholder="tu@email.com" /></label></div><label class="form-check"><input required type="checkbox" /> He leído y acepto la <a href="#privacidad">información de alta como socio</a> y el <a href="#privacidad">aviso de privacidad</a>.</label><button class="btn btn-primary" type="submit">Solicitar alta ↗</button></form></div>`, 'page enrollment-page'),
   'proyecto-educativo': () => page(title('Escuela', 'Un proyecto que escucha.', 'Nuestra propuesta combina exigencia, disfrute y participación para que cada alumno encuentre su propia voz.') + `<div class="paper prose"><p>El proyecto educativo de Asociación Musical La Matanza entiende la enseñanza como un recorrido compartido. Cada etapa suma herramientas, confianza y experiencias escénicas.</p><p>Trabajamos con grupos reducidos, repertorios diversos y objetivos claros. La práctica colectiva tiene un papel central desde el primer curso.</p><div class="timeline"><article><small>01 · Acompañar</small><h3>Un comienzo amable</h3><p>Descubrir el instrumento y crear hábitos que duren.</p></article><article><small>02 · Compartir</small><h3>Aprender con otros</h3><p>El ensemble como espacio de escucha, respeto y energía.</p></article><article><small>03 · Proyectar</small><h3>Subir al escenario</h3><p>Conciertos y proyectos para celebrar lo aprendido.</p></article></div></div>`),
   profesorado: () => page(`<div class="faculty-intro"><div><p class="eyebrow">Escuela · Equipo docente</p><h1>Quienes hacen <span>sonar</span> la escuela.</h1><p>Profesionales de la música y la educación que acompañan cada paso, desde la primera nota hasta el escenario.</p></div></div><div class="faculty-feature"><div class="faculty-feature-image" style="background-image:url('${img.conductor}')"></div><div class="faculty-feature-copy"><span class="pill">Dirección académica</span><h2>Marta Soler</h2><p>“Enseñar música es ayudar a encontrar una voz propia. Cada alumno llega con un ritmo distinto y merece un espacio para hacerlo crecer.”</p><a class="text-link" href="#contacto">Contactar con la escuela</a></div></div><div class="faculty-grid">${[['Dirección','Marta Soler','Dirección académica',img.conductor],['Viento madera','Irene Navarro','Flauta y clarinete',img.people],['Viento metal','Álex Molina','Trompeta y trombón',img.concert],['Lenguaje musical','Clara Pérez','Iniciación y lenguaje',img.classroom],['Cuerda y piano','Nuria Campos','Piano y guitarra',img.music],['Administración','Laura Vidal','Atención a familias',img.people]].map(p=>`<article class="person faculty-person"><div class="person-img" style="background-image:url('${p[3]}')"></div><div class="person-body"><span class="pill">${p[0]}</span><h3>${p[1]}</h3><p>${p[2]}</p></div></article>`).join('')}</div>`, 'page faculty-page'),
   'banda-joven': () => page(`<div class="youth-hero"><div class="youth-hero-copy"><p class="eyebrow">Banda · Formación joven</p><h1>Aprender a tocar.<br><span>Aprender a escuchar.</span></h1><p>La Banda Joven es el primer gran escenario para descubrir la energía de hacer música en equipo.</p><div class="btn-row"><a class="btn btn-primary" href="#contacto">Quiero participar ↗</a><a class="btn btn-light" href="#galeria">Ver momentos</a></div></div><div class="youth-hero-image" style="background-image:linear-gradient(145deg,rgba(49,93,42,.24),rgba(167,222,131,.36)),url('${img.people}')"><span>Ensayo · La Matanza</span></div></div><div class="youth-intro"><div><p class="eyebrow">Un recorrido compartido</p><h2>La música crece cuando se comparte.</h2></div><p>Desde las primeras notas hasta el concierto, acompañamos a cada alumno con repertorio adaptado, ensayos dinámicos y experiencias que dejan huella.</p></div><div class="youth-pillars"><article><span class="youth-number">01</span><h3>Escuchar</h3><p>Aprender a formar parte de un sonido común, respetando el pulso y el espacio de los demás.</p></article><article><span class="youth-number">02</span><h3>Ensayar</h3><p>Convertir la práctica en un encuentro semanal lleno de retos, confianza y pequeños logros.</p></article><article><span class="youth-number">03</span><h3>Compartir</h3><p>Llevar lo aprendido a conciertos didácticos, pasacalles y proyectos de la comunidad.</p></article></div><div class="youth-bottom"><div class="youth-bottom-image" style="background-image:url('${img.concert}')"></div><div class="youth-bottom-copy"><span class="pill">Tu siguiente paso</span><h2>Un lugar para encontrar tu sonido.</h2><p>Si estudias un instrumento y quieres empezar a tocar en grupo, te contamos cómo incorporarte a la Banda Joven.</p><a class="text-link" href="#contacto">Hablar con la escuela</a></div></div>`, 'page youth-page'),
@@ -136,7 +138,7 @@ const templates = {
   galardones: () => page(`<div class="awards-intro"><div><p class="eyebrow">Banda · Reconocimientos</p><h1>El camino<br><span>deja huella.</span></h1><p>Premios, grabaciones y momentos que celebran el trabajo de muchas generaciones de músicos.</p></div><div class="awards-emblem">✦<small>Desde<br>2008</small></div></div><div class="award-feature"><div class="award-feature-art"><span>Reconocimiento a la trayectoria</span><strong>16</strong><small>años de música compartida</small></div><div class="award-feature-copy"><span class="pill">Distinción especial</span><h2>Medalla de Oro</h2><p>Un reconocimiento a una historia sostenida por generaciones, ensayos, conciertos y una comunidad que nunca ha dejado de acompañar.</p><a class="text-link" href="#curriculum">Conocer nuestra historia</a></div></div><div class="awards-head"><div><p class="eyebrow">Hitos destacados</p><h2>Una trayectoria que suena</h2></div><p>Algunos momentos que forman parte de nuestro archivo musical.</p></div><div class="awards-grid"><article class="award-card"><span class="award-year">2019</span><div class="award-icon">✦</div><span class="pill">Certamen nacional</span><h3>Primer premio</h3><p>Una actuación especial que todavía recordamos con orgullo.</p></article><article class="award-card"><span class="award-year">2008</span><div class="award-icon">◈</div><span class="pill">Trayectoria</span><h3>Medalla de Oro</h3><p>Un reconocimiento a los primeros 16 años de la agrupación.</p></article><article class="award-card"><span class="award-year">2007</span><div class="award-icon">♫</div><span class="pill">Grabaciones</span><h3>Álbum de estudio</h3><p>Un repertorio compartido que permanece en nuestra memoria.</p></article></div><div class="awards-quote"><span>“</span><p>Cada premio pertenece a quienes estuvieron, a quienes están y a quienes seguirán haciendo música.</p><small>— Archivo Asociación Musical La Matanza</small></div>`, 'page awards-page'),
   director: () => page(`<div class="director-intro"><div><p class="eyebrow">Banda · Dirección musical</p><h1>La música también <span>se dirige.</span></h1><p>Una mirada artística que convierte cada ensayo en una conversación y cada concierto en un encuentro.</p></div><div class="director-mark">♫</div></div><div class="director-profile"><div class="director-photo" style="background-image:url('${img.conductor}')"><span>Álvaro Serrano · Director titular</span></div><div class="director-bio"><span class="pill">Director musical</span><h2>Álvaro Serrano</h2><p>Director de orquesta y trombonista, formado entre conservatorio, escenario y trabajo colectivo.</p><p>Su manera de dirigir combina precisión, escucha y una mirada abierta al repertorio. Con él, cada sección encuentra su lugar y cada programa cuenta una historia.</p><a class="btn btn-primary" href="#contacto">Contactar con la banda ↗</a></div></div><div class="director-career"><div><p class="eyebrow">Trayectoria</p><h2>Una dirección<br>en movimiento.</h2></div><div class="director-timeline"><article><span>01</span><div><b>Formación superior</b><p>Dirección de banda, orquesta y especialización instrumental.</p></div></article><article><span>02</span><div><b>Experiencia escénica</b><p>Proyectos con agrupaciones jóvenes y ensembles profesionales.</p></div></article><article><span>03</span><div><b>Al frente de La Matanza</b><p>Una etapa para ampliar repertorio, energía y comunidad.</p></div></article></div></div><div class="director-archive"><div class="director-archive-head"><div><p class="eyebrow">Archivo</p><h2>Quienes dirigieron antes</h2></div><p>Una memoria construida por distintas miradas y generaciones.</p></div><div class="director-archive-list"><div><span>2018—2025</span><b>Clara Molina</b><i>↗</i></div><div><span>2010—2018</span><b>Javier Belda</b><i>↗</i></div><div><span>1998—2010</span><b>María Torres</b><i>↗</i></div><div><span>1982—1998</span><b>Antonio Serra</b><i>↗</i></div></div></div>`, 'page director-page'),
   sociedad: () => page(title('Sociedad', 'Una comunidad que participa.', 'Detrás de cada concierto hay personas que sostienen, acompañan y hacen crecer el proyecto.') + `<div class="cards"><article class="card"><div class="card-icon">+</div><h3>Hazte socio</h3><p>Apoya la escuela, los conciertos y los proyectos culturales.</p><a class="text-link" href="#socios">Quiero participar</a></article></div>`),
-  socios: () => page(`<div class="member-intro"><div><p class="eyebrow">Sociedad · Participa</p><h1>La música crece<br><span>cuando se comparte.</span></h1><p>Hazte socio de la Asociación Musical La Matanza y ayuda a sostener una escuela, una banda y una comunidad cultural abierta a todos.</p><div class="btn-row"><a class="btn btn-primary" href="#contacto">Quiero hacerme socio ↗</a></div></div><div class="member-intro-card"><span>Tu apoyo</span><strong>Hace posible</strong><small>clases · conciertos · futuro</small></div></div><div class="member-values"><div><p class="eyebrow">Por qué participar</p><h2>Tu aportación<br>se convierte en música.</h2></div><div class="member-value-list"><article><span>01</span><div><h3>Apoyas la formación</h3><p>Ayudas a que más personas puedan descubrir y aprender música.</p></div></article><article><span>02</span><div><h3>Impulsas la cultura</h3><p>Contribuyes a mantener conciertos, proyectos y actividades abiertas.</p></div></article><article><span>03</span><div><h3>Formas parte</h3><p>Recibes información y compartes la vida de una comunidad activa.</p></div></article></div></div><div class="member-steps"><div class="member-steps-head"><p class="eyebrow">Es muy sencillo</p><h2>Empieza en tres pasos</h2></div><div class="steps-grid"><article><b>1</b><h3>Escríbenos</h3><p>Cuéntanos que quieres formar parte de la asociación.</p></article><article><b>2</b><h3>Te informamos</h3><p>Te explicamos las opciones y resolvemos tus dudas.</p></article><article><b>3</b><h3>Bienvenido</h3><p>Comienzas a participar en la comunidad de La Matanza.</p></article></div></div><div class="member-cta"><div><span class="pill">Hazte socio</span><h2>¿Nos ayudas a seguir haciendo música?</h2><p>El formulario definitivo estará disponible aquí.</p></div><a class="btn btn-primary" href="#contacto">Solicitar alta ↗</a></div>`, 'page member-page'),
+  socios: () => page(`<div class="member-intro"><div><p class="eyebrow">Sociedad · Participa</p><h1>La música crece<br><span>cuando se comparte.</span></h1><p>Hazte socio de la Asociación Musical La Matanza y ayuda a sostener una escuela, una banda y una comunidad cultural abierta a todos.</p><div class="btn-row"><a class="btn btn-primary" href="#alta-socio">Quiero hacerme socio ↗</a></div></div><div class="member-intro-card"><span>Tu apoyo</span><strong>Hace posible</strong><small>clases · conciertos · futuro</small></div></div><div class="member-values"><div><p class="eyebrow">Por qué participar</p><h2>Tu aportación<br>se convierte en música.</h2></div><div class="member-value-list"><article><span>01</span><div><h3>Apoyas la formación</h3><p>Ayudas a que más personas puedan descubrir y aprender música.</p></div></article><article><span>02</span><div><h3>Impulsas la cultura</h3><p>Contribuyes a mantener conciertos, proyectos y actividades abiertas.</p></div></article><article><span>03</span><div><h3>Formas parte</h3><p>Recibes información y compartes la vida de una comunidad activa.</p></div></article></div></div><div class="member-steps"><div class="member-steps-head"><p class="eyebrow">Es muy sencillo</p><h2>Empieza en tres pasos</h2></div><div class="steps-grid"><article><b>1</b><h3>Escríbenos</h3><p>Cuéntanos que quieres formar parte de la asociación.</p></article><article><b>2</b><h3>Te informamos</h3><p>Te explicamos las opciones y resolvemos tus dudas.</p></article><article><b>3</b><h3>Bienvenido</h3><p>Comienzas a participar en la comunidad de La Matanza.</p></article></div></div><div class="member-cta"><div><span class="pill">Hazte socio</span><h2>¿Nos ayudas a seguir haciendo música?</h2><p>El formulario definitivo estará disponible aquí.</p></div><a class="btn btn-primary" href="#alta-socio">Solicitar alta ↗</a></div>`, 'page member-page'),
   'junta-directiva': () => page(`<div class="board-intro"><div><p class="eyebrow">Sociedad · Organización</p><h1>Una dirección que <span>acompaña.</span></h1><p>Personas que ponen tiempo, criterio y cuidado al servicio de toda la comunidad musical.</p></div><div class="board-term"><span>Junta actual</span><strong>2024—2028</strong><small>Equipo de gobierno</small></div></div><div class="board-lead"><div class="board-lead-image" style="background-image:url('${img.people}')"></div><div class="board-lead-copy"><span class="pill">Presidencia</span><h2>Elena Martínez</h2><p>“Cuidar la asociación es cuidar los espacios donde la música puede crecer.”</p><span class="board-caption">Presidenta · Asociación Musical La Matanza</span></div></div><div class="board-section-head"><div><p class="eyebrow">Equipo actual</p><h2>Las personas detrás del proyecto</h2></div><p>Una estructura cercana y transparente para acompañar la escuela, la banda y sus actividades.</p></div><div class="board-grid">${[['Vicepresidente','Pablo Ríos',img.conductor],['Secretaria','Lucía Bernal',img.classroom],['Tesorero','Jorge Vidal',img.music],['Vocal','Marta Pérez',img.concert],['Vocal','Sergio Cano',img.people]].map(p=>`<article class="board-member"><div class="board-member-avatar" style="background-image:url('${p[2]}')"></div><div><span>${p[0]}</span><h3>${p[1]}</h3><small>Junta directiva · 2024—2028</small></div></article>`).join('')}</div><div class="board-history"><div><p class="eyebrow">Archivo</p><h2>Juntas anteriores</h2><p>Consulta la evolución de los equipos que han acompañado a la asociación.</p></div><div class="board-years"><button type="button"><span>2020—2024</span><b>Ver composición</b><i>↗</i></button><button type="button"><span>2016—2020</span><b>Ver composición</b><i>↗</i></button><button type="button"><span>2012—2016</span><b>Ver composición</b><i>↗</i></button></div></div>`, 'page board-page'),
   revista: () => page(`<div class="magazine-intro"><div><p class="eyebrow">Sociedad · Publicación anual</p><h1>La revista<br><span>de la casa.</span></h1><p>Historias y memoria para conservar todo aquello que forma parte de nuestra vida musical.</p><a class="btn btn-primary" href="#contacto">Descargar última edición ↗</a></div><div class="magazine-cover"><div class="cover-top">La Matanza <span>2026</span></div><strong>El pulso<br>de la comunidad</strong><small>Revista anual · Nº IX</small><i>♫</i></div></div><div class="magazine-feature"><div><p class="eyebrow">Nº IX · 2026</p><h2>Una publicación para volver a encontrarnos.</h2><p>La revista reúne la actualidad de la escuela, los conciertos, las voces de nuestros músicos y los recuerdos que construyen nuestra historia.</p></div><div class="magazine-feature-list"><span>En este número</span><b>Escuela · Archivo · Conciertos</b><a class="text-link" href="#contacto">Leer la edición</a></div></div><div class="magazine-archive-head"><div><p class="eyebrow">Colección</p><h2>Ediciones anteriores</h2></div><p>Una biblioteca pequeña, pero llena de historias.</p></div><div class="magazine-grid"><article class="magazine-card"><div class="mini-cover green-cover"><span>2025</span><b>Aprender<br>escuchando</b></div><div><span class="pill">Nº VIII · 2025</span><h3>Aprender escuchando</h3><a class="text-link" href="#contacto">Consultar edición</a></div></article><article class="magazine-card"><div class="mini-cover cream-cover"><span>2023</span><b>Volver<br>a sonar</b></div><div><span class="pill">Nº VII · 2023</span><h3>Volver a sonar</h3><a class="text-link" href="#contacto">Consultar edición</a></div></article><article class="magazine-card"><div class="mini-cover dark-cover"><span>2015</span><b>Memoria<br>compartida</b></div><div><span class="pill">Nº VI · 2015</span><h3>Memoria compartida</h3><a class="text-link" href="#contacto">Consultar edición</a></div></article></div>`, 'page magazine-page'),
   galeria: () => page(`<div class="gallery-intro"><div><p class="eyebrow">Comunidad · Imágenes</p><h1>Momentos<br><span>que permanecen.</span></h1><p>Conciertos, ensayos y encuentros que cuentan cómo se vive la música dentro y fuera del escenario.</p></div><div class="gallery-count"><strong>07</strong><span>historias<br>para recordar</span></div></div><div class="gallery-feature"><button class="gallery-item gallery-feature-image" type="button" data-gallery-item data-src="${img.concert}" data-label="Concierto de invierno" style="background-image:url('${img.concert}')"><span>Concierto de invierno <i>↗</i></span></button><div class="gallery-feature-copy"><span class="pill">Álbum destacado</span><h2>La música se ve así.</h2><p>Una colección de escenas cotidianas, energía compartida y momentos que merecen quedarse.</p><button class="text-link gallery-open-feature" type="button" data-gallery-target="${img.concert}">Ver imagen completa ↗</button></div></div><div class="gallery-heading"><div><p class="eyebrow">Selección visual</p><h2>Dentro de la casa</h2></div><p>Haz clic en cualquier imagen para verla con más detalle.</p></div><div class="gallery-grid gallery-grid-new">${[['Ensayo abierto',img.music],['Banda Joven',img.people],['Clase de conjunto',img.classroom],['Día de la música',img.hero],['Entre bambalinas',img.conductor],['Fiestas de verano',img.concert]].map(([label,url])=>`<button class="gallery-item" type="button" data-gallery-item data-src="${url}" data-label="${label}" style="background-image:url('${url}')"><span>${label} <i>↗</i></span></button>`).join('')}</div><div class="gallery-lightbox" data-gallery-lightbox hidden><button class="gallery-lightbox-close" type="button" aria-label="Cerrar imagen">×</button><img alt="" /><p></p></div>`, 'page gallery-page'),
@@ -234,7 +236,7 @@ function setupEnrollmentForm() {
   const toggle = document.querySelector('#alumno-mayor');
   const program = document.querySelector('select[name="instrumento"]');
   const speciality = document.querySelector('.instrument-choice');
-  if (!toggle && !program) return;
+  if (!toggle && !program && !form) return;
   const tutorFields = [...document.querySelectorAll('.tutor-field')];
   const update = () => tutorFields.forEach(field => {
     field.hidden = toggle.checked;
@@ -257,6 +259,15 @@ function setupEnrollmentForm() {
     updateSpeciality();
   }
   if (form) {
+    form.querySelectorAll('input[type="date"]').forEach(input => {
+      const today = new Date();
+      input.max = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+      input.addEventListener('click', () => {
+      if (typeof input.showPicker === 'function') {
+        try { input.showPicker(); } catch (_) { /* el navegador puede requerir una interacción directa */ }
+      }
+      });
+    });
     const validateDni = field => {
       const value = field.value.trim().toUpperCase();
       field.setCustomValidity('');
@@ -270,7 +281,7 @@ function setupEnrollmentForm() {
     const showFieldError = field => {
       const label = field.closest('label');
       if (!label || label.querySelector('.field-error')) return;
-      const messages = { email: 'Escribe un correo válido, por ejemplo nombre@dominio.com.', telefono: 'Introduce un teléfono válido de 9 dígitos.', 'codigo-postal': 'El código postal debe tener exactamente 5 números.', 'dni-alumno': 'Introduce un DNI, NIF o NIE válido.', 'dni-tutor': 'Introduce un DNI, NIF o NIE válido.', nacimiento: 'Selecciona una fecha de nacimiento válida.', especialidad: 'Selecciona un instrumento.' };
+      const messages = { email: 'Escribe un correo válido, por ejemplo nombre@dominio.com.', telefono: 'Introduce un teléfono válido de 9 dígitos.', 'codigo-postal': 'El código postal debe tener exactamente 5 números.', dni: 'Introduce un DNI, NIF o NIE válido.', 'dni-alumno': 'Introduce un DNI, NIF o NIE válido.', 'dni-tutor': 'Introduce un DNI, NIF o NIE válido.', nacimiento: 'Selecciona una fecha de nacimiento válida.', especialidad: 'Selecciona un instrumento.' };
       const message = field.validity.valueMissing ? 'Este campo es obligatorio.' : field.validity.customError ? field.validationMessage : messages[field.name] || (field.validity.typeMismatch ? 'Introduce un formato válido.' : 'Revisa el formato indicado.');
       const error = document.createElement('small');
       error.className = 'field-error';
@@ -280,7 +291,7 @@ function setupEnrollmentForm() {
     const clearFieldError = field => field.closest('label')?.querySelector('.field-error')?.remove();
     form.addEventListener('submit', event => {
       form.classList.add('was-validated');
-      form.querySelectorAll('input[name="dni-alumno"], input[name="dni-tutor"]').forEach(validateDni);
+      form.querySelectorAll('input[name="dni-alumno"], input[name="dni-tutor"], input[name="dni"]').forEach(validateDni);
       const invalid = [...form.elements].filter(element => element.willValidate && !element.checkValidity());
       invalid.forEach(showFieldError);
       if (invalid.length) {
@@ -289,15 +300,40 @@ function setupEnrollmentForm() {
         return;
       }
       event.preventDefault();
-      alert('Solicitud validada correctamente. El envío de correo se activará cuando configuremos el servicio de recepción.');
+      alert(form.classList.contains('member-form') ? 'Solicitud de alta validada correctamente. El envío se activará cuando configuremos el servicio de recepción.' : 'Solicitud validada correctamente. El envío de correo se activará cuando configuremos el servicio de recepción.');
     });
     form.addEventListener('input', event => {
-      if (event.target.name === 'dni-alumno' || event.target.name === 'dni-tutor') validateDni(event.target);
+      if (event.target.name === 'dni-alumno' || event.target.name === 'dni-tutor' || event.target.name === 'dni') validateDni(event.target);
       if (event.target.willValidate && event.target.checkValidity()) clearFieldError(event.target);
     });
     form.addEventListener('blur', event => {
       if (event.target.willValidate && !event.target.checkValidity()) showFieldError(event.target);
     }, true);
+    // Validación inmediata: al editar se actualiza el mensaje sin esperar al envío.
+    const dniFields = ['dni-alumno', 'dni-tutor', 'dni'];
+    const validateInteractiveField = field => {
+      if (!field || !field.willValidate) return;
+      if (dniFields.includes(field.name)) validateDni(field);
+      field.dataset.touched = 'true';
+      field.classList.toggle('has-error', !field.checkValidity());
+      if (field.checkValidity()) clearFieldError(field);
+      else {
+        field.closest('label')?.querySelector('.field-error')?.remove();
+        showFieldError(field);
+      }
+    };
+    form.addEventListener('input', event => {
+      if (event.target.matches('input, select, textarea')) validateInteractiveField(event.target);
+    });
+    form.addEventListener('change', event => {
+      if (event.target.matches('input, select, textarea')) validateInteractiveField(event.target);
+    });
+    form.addEventListener('blur', event => validateInteractiveField(event.target), true);
+    toggle?.addEventListener('change', () => {
+      if (toggle.checked) tutorFields.forEach(field => {
+        field.querySelector('.field-error')?.remove();
+      });
+    });
   }
 }
 
@@ -346,6 +382,43 @@ async function syncGlissandooEvents() {
   }
 }
 
+function syncEnrollmentPeriodCopy() {
+  const deadline = document.querySelector('.enroll-deadline');
+  if (!deadline) return;
+  const now = new Date();
+  const month = now.getMonth() + 1;
+  const open = month >= 6 && month <= 10;
+  const headline = deadline.querySelector('strong');
+  const detail = deadline.querySelector('small');
+  const heroLabel = document.querySelector('.enroll-hero-image span');
+  if (headline) headline.textContent = 'Del 1 de junio al 31 de octubre';
+  if (detail) detail.textContent = 'La matrícula permanece cerrada del 1 de noviembre al 30 de mayo.';
+  if (heroLabel) heroLabel.textContent = open ? 'Escuela La Matanza · Inscripciones abiertas del 1 de junio al 31 de octubre' : 'Escuela La Matanza · Matrícula cerrada hasta el 31 de mayo';
+}
+
+function syncCurrentYearLabels() {
+  const now = new Date();
+  const year = now.getFullYear();
+  const courseStart = now.getMonth() + 1 >= 6 ? year : year - 1;
+  const courseLabel = `${courseStart} / ${courseStart + 1}`;
+  document.querySelectorAll('[data-current-year]').forEach(node => { node.textContent = String(year); });
+  const enrollmentIntro = document.querySelector('.enroll-intro .eyebrow');
+  if (enrollmentIntro) enrollmentIntro.textContent = `Escuela · Curso ${courseLabel}`;
+  const calendarIntro = document.querySelector('.calendar-intro .eyebrow');
+  if (calendarIntro) calendarIntro.textContent = `Escuela · Curso ${courseLabel}`;
+  const calendarPill = document.querySelector('.calendar-card .calendar-top .pill');
+  if (calendarPill) calendarPill.textContent = `Curso ${courseLabel}`;
+  const memberPanel = document.querySelector('.member-form-panel');
+  if (memberPanel) {
+    const memberYear = memberPanel.closest('.enrollment-page')?.querySelector('.enrollment-year strong');
+    if (memberYear) memberYear.textContent = String(year);
+  }
+  const magazineYear = document.querySelector('.magazine-cover .cover-top span');
+  if (magazineYear) magazineYear.textContent = String(year);
+  const magazineFeature = document.querySelector('.magazine-feature .eyebrow');
+  if (magazineFeature) magazineFeature.textContent = `Nº IX · ${year}`;
+}
+
 // ---------------------------------------------------------------------------
 // Hash router. The site stays static and deployable without a backend.
 // ---------------------------------------------------------------------------
@@ -357,6 +430,8 @@ function render() {
   setupGalleryLightbox(document.querySelector('main'));
   setupCalendarControls();
   setupEnrollmentForm();
+  syncEnrollmentPeriodCopy();
+  syncCurrentYearLabels();
   setActiveNavigation(navEl, key);
   document.title = `${key === 'inicio' ? 'Asociación Musical La Matanza' : (key.replaceAll('-', ' ').replace(/\b\w/g, c => c.toUpperCase())) + ' · Asociación Musical La Matanza'}`;
   window.scrollTo({top:0,behavior:'smooth'});
