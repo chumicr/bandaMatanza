@@ -496,6 +496,24 @@ function syncLegalDetails() {
   }
 }
 
+function syncSocialLinks() {
+  const links = document.querySelectorAll('.contact-socials a');
+  links.forEach(link => {
+    const isWhatsApp = /whatsapp/i.test(link.textContent);
+    link.href = isWhatsApp ? 'https://whatsapp.com/channel/0029VaX4PyZ7T8bRQwQVfd0x' : 'https://www.facebook.com/BandaLaMatanza/?locale=es_ES';
+    link.target = '_blank';
+    link.rel = 'noopener noreferrer';
+  });
+}
+
+function syncDirectorName() {
+  const name = 'Adrián Marcos García';
+  const caption = document.querySelector('.director-photo span');
+  const heading = document.querySelector('.director-bio h2');
+  if (caption) caption.textContent = `${name} · Director titular`;
+  if (heading) heading.textContent = name;
+}
+
 // ---------------------------------------------------------------------------
 // Hash router. The site stays static and deployable without a backend.
 // ---------------------------------------------------------------------------
@@ -510,6 +528,8 @@ function render() {
   syncEnrollmentPeriodCopy();
   syncCurrentYearLabels();
   syncLegalDetails();
+  syncSocialLinks();
+  syncDirectorName();
   setActiveNavigation(navEl, key);
   document.title = `${key === 'inicio' ? 'Asociación Musical La Matanza' : (key.replaceAll('-', ' ').replace(/\b\w/g, c => c.toUpperCase())) + ' · Asociación Musical La Matanza'}`;
   window.scrollTo({top:0,behavior:'smooth'});
