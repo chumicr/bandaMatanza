@@ -182,6 +182,43 @@ const fallbackCalendarEvents = [
 let calendarCursor = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
 let calendarEvents = fallbackCalendarEvents;
 
+const holidayCalendar = {
+  2026: [
+    ['01-01', 'Año Nuevo · nacional'], ['01-06', 'Epifanía del Señor · nacional'],
+    ['03-19', 'San José · Comunitat Valenciana'], ['04-03', 'Viernes Santo · nacional'],
+    ['04-06', 'Lunes de Pascua · Comunitat Valenciana'], ['05-01', 'Fiesta del Trabajo · nacional'],
+    ['06-24', 'San Juan · Comunitat Valenciana'], ['07-17', 'Fiestas de la Reconquista · Orihuela'],
+    ['08-15', 'Asunción de la Virgen · nacional'], ['09-08', 'Virgen de Monserrate · Orihuela'],
+    ['10-09', 'Día de la Comunitat Valenciana · autonómico'], ['10-12', 'Fiesta Nacional de España · nacional'],
+    ['12-08', 'Inmaculada Concepción · nacional'], ['12-25', 'Natividad del Señor · nacional']
+  ]
+};
+
+function holidaysForYear(year) {
+  if (holidayCalendar[year]) return new Map(holidayCalendar[year].map(([date, label]) => [`${year}-${date}`, label]));
+  const dates = [
+    ['01-01', 'Año Nuevo · nacional'], ['01-06', 'Epifanía del Señor · nacional'],
+    ['03-19', 'San José · Comunitat Valenciana'], ['05-01', 'Fiesta del Trabajo · nacional'],
+    ['06-24', 'San Juan · Comunitat Valenciana'], ['07-17', 'Fiestas de la Reconquista · Orihuela'],
+    ['08-15', 'Asunción de la Virgen · nacional'], ['09-08', 'Virgen de Monserrate · Orihuela'],
+    ['10-09', 'Día de la Comunitat Valenciana · autonómico'], ['10-12', 'Fiesta Nacional de España · nacional'],
+    ['12-08', 'Inmaculada Concepción · nacional'], ['12-25', 'Natividad del Señor · nacional']
+  ];
+  // Viernes Santo y Lunes de Pascua se calculan para que el calendario siga funcionando en años futuros.
+  const a = year % 19; const b = Math.floor(year / 100); const c = year % 100;
+  const d = Math.floor(b / 4); const e = b % 4; const f = Math.floor((b + 8) / 25);
+  const g = Math.floor((b - f + 1) / 3); const h = (19 * a + b - d - g + 15) % 30;
+  const i = Math.floor(c / 4); const k = c % 4; const l = (32 + 2 * e + 2 * i - h - k) % 7;
+  const m = Math.floor((a + 11 * h + 22 * l) / 451); const month = Math.floor((h + l - 7 * m + 114) / 31);
+  const day = ((h + l - 7 * m + 114) % 31) + 1;
+  const easter = new Date(Date.UTC(year, month - 1, day));
+  const iso = date => `${year}-${String(date.getUTCMonth() + 1).padStart(2, '0')}-${String(date.getUTCDate()).padStart(2, '0')}`;
+  const goodFriday = new Date(easter); goodFriday.setUTCDate(goodFriday.getUTCDate() - 2);
+  const easterMonday = new Date(easter); easterMonday.setUTCDate(easterMonday.getUTCDate() + 1);
+  dates.push([iso(goodFriday).slice(5), 'Viernes Santo · nacional'], [iso(easterMonday).slice(5), 'Lunes de Pascua · Comunitat Valenciana']);
+  return new Map(dates.map(([date, label]) => [`${year}-${date}`, label]));
+}
+
 function eventDateKey(event) {
   return String(event.datetime).slice(0, 10);
 }
@@ -190,6 +227,7 @@ function renderCalendarMonth(monthDate, events = calendarEvents) {
   const grid = document.querySelector('.calendar-days');
   const heading = document.querySelector('.calendar-top h2');
   const previous = document.querySelector('.calendar-actions button:first-child');
+  const next = document.querySelector('.calendar-actions button:last-child');
   if (!grid || !heading) return;
   const year = monthDate.getFullYear();
   const month = monthDate.getMonth();
@@ -199,18 +237,31 @@ function renderCalendarMonth(monthDate, events = calendarEvents) {
   const monthName = new Intl.DateTimeFormat('es-ES', { month: 'long', year: 'numeric' }).format(firstDay);
   heading.textContent = monthName.charAt(0).toUpperCase() + monthName.slice(1);
   const eventMap = new Map(events.map(event => [eventDateKey(event), event]));
+  const holidayMap = holidaysForYear(year);
   const cells = [];
   for (let i = 0; i < leading; i += 1) cells.push('<span class="muted-day"></span>');
   for (let day = 1; day <= daysInMonth; day += 1) {
     const key = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
     const event = eventMap.get(key);
-    cells.push(event ? `<span class="calendar-event-day" title="${event.displayName}"><b>${day}</b><i>Evento</i></span>` : `<span>${day}</span>`);
+    const holiday = holidayMap.get(key);
+    if (event && holiday) cells.push(`<span class="calendar-event-day calendar-holiday-day" title="${event.displayName} · ${holiday}"><b>${day}</b><i>Concierto · Festivo</i></span>`);
+    else if (event) cells.push(`<span class="calendar-event-day" title="${event.displayName}"><b>${day}</b><i>Concierto</i></span>`);
+    else if (holiday) cells.push(`<span class="calendar-holiday-day" title="${holiday}"><b>${day}</b><i>Festivo</i></span>`);
+    else cells.push(`<span>${day}</span>`);
   }
   while (cells.length % 7) cells.push('<span class="muted-day"></span>');
   grid.innerHTML = cells.join('');
+  grid.querySelectorAll('.calendar-event-day').forEach(cell => {
+    const concert = /concierto|pasacalles|procesi[oó]n/i.test(cell.getAttribute('title') || '');
+    const label = cell.querySelector('i');
+    if (concert) cell.classList.add('calendar-concert-day');
+    if (label) label.textContent = `${concert ? 'Concierto' : 'Escuela'}${cell.classList.contains('calendar-holiday-day') ? ' · Festivo' : ''}`;
+  });
   const now = new Date();
   const currentMonth = new Date(now.getFullYear(), now.getMonth(), 1);
   if (previous) previous.disabled = monthDate <= currentMonth;
+  const maximumMonth = new Date(now.getFullYear(), now.getMonth() + 12, 1);
+  if (next) next.disabled = monthDate >= maximumMonth;
 }
 
 function setupCalendarControls() {
@@ -226,6 +277,8 @@ function setupCalendarControls() {
     renderCalendarMonth(calendarCursor);
   });
   buttons[1]?.addEventListener('click', () => {
+    const maximumMonth = new Date(new Date().getFullYear(), new Date().getMonth() + 12, 1);
+    if (calendarCursor >= maximumMonth) return;
     calendarCursor = new Date(calendarCursor.getFullYear(), calendarCursor.getMonth() + 1, 1);
     renderCalendarMonth(calendarCursor);
   });
@@ -408,6 +461,8 @@ function syncCurrentYearLabels() {
   if (calendarIntro) calendarIntro.textContent = `Escuela · Curso ${courseLabel}`;
   const calendarPill = document.querySelector('.calendar-card .calendar-top .pill');
   if (calendarPill) calendarPill.textContent = `Curso ${courseLabel}`;
+  const calendarMetaTitle = document.querySelector('.calendar-intro-meta strong');
+  if (calendarMetaTitle) calendarMetaTitle.textContent = 'Próximo concierto';
   const memberPanel = document.querySelector('.member-form-panel');
   if (memberPanel) {
     const memberYear = memberPanel.closest('.enrollment-page')?.querySelector('.enrollment-year strong');
