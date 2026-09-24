@@ -271,6 +271,7 @@ function renderCalendarMonth(monthDate, events = calendarEvents) {
 function setupCalendarControls() {
   const calendar = document.querySelector('.calendar-page');
   if (!calendar) return;
+  calendar.querySelector('.schedule-card-head a')?.remove();
   calendarCursor = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
   renderCalendarMonth(calendarCursor);
   const buttons = calendar.querySelectorAll('.calendar-actions button');
@@ -427,6 +428,20 @@ function setupDonationForm() {
   });
 }
 
+function removeButtonArrows(root = document) {
+  root.querySelectorAll('a.btn, a.header-donation, a.header-cta, button').forEach((button) => {
+    // Las flechas del archivo de juntas anteriores se mantienen como indicador visual.
+    if (button.closest('.board-years')) return;
+    if (button.closest('.calendar-actions')) return;
+    button.querySelectorAll('i, span').forEach((icon) => {
+      if (/↗/.test(icon.textContent || '')) icon.remove();
+    });
+    [...button.childNodes].forEach((node) => {
+      if (node.nodeType === Node.TEXT_NODE) node.textContent = node.textContent.replace(/\s*↗/g, '').replace(/^\s*[←→]\s*/g, '');
+    });
+  });
+}
+
 function syncDonationLink() {
   const memberCta = document.querySelector('.member-cta');
   const memberIntro = document.querySelector('.member-intro');
@@ -548,6 +563,17 @@ function syncSocialLinks() {
   });
 }
 
+function positionFooterLegalLinks() {
+  const footerBottom = document.querySelector('.footer-bottom');
+  if (!footerBottom || document.querySelector('.footer-legal')) return;
+  const legal = [...footerBottom.children].find((node) => node.querySelector?.('a[href="#politica-privacidad"]'));
+  if (!legal) return;
+  const legalBar = document.createElement('div');
+  legalBar.className = 'footer-legal';
+  legalBar.appendChild(legal);
+  footerBottom.parentNode.insertBefore(legalBar, footerBottom);
+}
+
 function syncDirectorName() {
   const name = 'Adrián Marcos García';
   const caption = document.querySelector('.director-photo span');
@@ -572,8 +598,10 @@ function render() {
   syncCurrentYearLabels();
   syncLegalDetails();
   syncSocialLinks();
+  positionFooterLegalLinks();
   syncDirectorName();
   syncDonationLink();
+  removeButtonArrows(document);
   setActiveNavigation(navEl, key);
   document.title = `${key === 'inicio' ? 'Asociación Musical La Matanza' : (key.replaceAll('-', ' ').replace(/\b\w/g, c => c.toUpperCase())) + ' · Asociación Musical La Matanza'}`;
   window.scrollTo({top:0,behavior:'smooth'});

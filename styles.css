@@ -184,3 +184,38 @@ h1,h2,h3,h4,h5,h6,.display,.brand strong,.enrollment-year strong{font-family:"Lo
 .schedule-list{max-height:430px;overflow-y:auto;overscroll-behavior:contain;padding-right:8px;scrollbar-width:thin;scrollbar-color:#a7de83 transparent}
 .schedule-list::-webkit-scrollbar{width:7px}.schedule-list::-webkit-scrollbar-track{background:#f4faef;border-radius:99px}.schedule-list::-webkit-scrollbar-thumb{background:#a7de83;border-radius:99px}
 @media(max-width:640px){.schedule-list{max-height:350px}}
+
+/* CTA de donaciones en la cabecera */
+.header-donation{order:2;margin-left:auto;border-radius:99px;background:var(--accent);color:#21451d;text-decoration:none;padding:11px 15px;font-size:12px;font-weight:800;white-space:nowrap;transition:transform .2s,box-shadow .2s}
+.header-donation span{margin-left:5px;color:#315d2a}
+.header-donation:hover{transform:translateY(-2px);box-shadow:0 10px 22px rgba(53,91,44,.16)}
+.header-cta{order:3;margin-left:0}
+.menu-toggle{order:4}
+@media(max-width:900px){.header-donation{display:inline-flex;padding:9px 11px;font-size:11px}.header-cta{display:inline-flex}.header-inner{gap:8px}}
+@media(max-width:640px){.header-donation{padding:8px 9px;font-size:0}.header-donation:before{content:"Donar";font-size:10px}.header-donation span{font-size:14px;margin-left:4px}.header-cta{padding:8px 9px;font-size:10px}.header-cta span{margin-left:3px}}
+@media(max-width:380px){.header-inner{padding-left:10px;padding-right:10px;gap:5px}.brand{gap:6px}.brand strong{font-size:15px}.header-donation{width:32px;padding:7px;justify-content:center}.header-donation:before{content:"♥";font-size:14px}.header-donation span{display:none}.header-cta{padding:7px;font-size:9px}.menu-toggle{width:34px}}
+
+/* Ajustes finales para pantallas pequeñas: evita desbordamientos de texto y
+   mantiene las columnas flex/grid dentro del ancho disponible. */
+@media(max-width:640px){
+  html,body{overflow-x:hidden}
+  .page>*{min-width:0}
+  .page h1,.page h2,.page h3,.page p,.page small,.page b{max-width:100%}
+  .page a,.page button,.contact-info-card a,.footer-grid a,.legal-content a{overflow-wrap:anywhere;word-break:normal}
+  .event>div:last-child,.schedule-list li>div:last-child,.board-member>div:last-child,
+  .director-timeline article>div,.contact-info-card>div:last-child{min-width:0}
+  .event h3,.schedule-list b,.board-member h3,.director-timeline b{overflow-wrap:anywhere}
+  .calendar-top>div:first-child{min-width:0}
+  .calendar-top h2{white-space:nowrap;overflow-wrap:normal}
+  .calendar-intro-meta{max-width:none}
+  .board-years button{grid-template-columns:minmax(78px,auto) minmax(0,1fr) 18px}
+  .board-years b{min-width:0;overflow-wrap:anywhere}
+  .contact-socials .btn,.member-cta .btn,.history-legacy .btn{max-width:100%}
+  .enrollment-panel,.contact-form-card,.contact-aside,.paper{overflow:hidden}
+}
+.gallery-open-feature:after{content:""!important}
+.footer-legal{max-width:1184px;margin:28px auto 0;display:flex;justify-content:flex-end;color:#9293a0;font-size:11px}
+.footer-legal a{color:inherit;text-decoration:none;margin:0 4px}
+.footer-legal a:hover{color:#a7de83}
+.footer-bottom{margin-top:14px}
+@media(max-width:640px){.footer-legal{justify-content:flex-start;margin-top:24px}.footer-bottom{margin-top:14px}}
