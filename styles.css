@@ -148,6 +148,9 @@ h1,h2,h3,h4,h5,h6,.display,.brand strong,.enrollment-year strong{font-family:"Lo
 .footer-partner a{width:min(165px,44vw);height:58px;display:flex!important;align-items:center;justify-content:flex-start;margin:0!important;padding:0}
 .footer-partner img{display:block;width:100%;height:100%;object-fit:contain;object-position:left center;opacity:.95}
 .footer-partner img[src*="logo-generalitat"]{width:135px;object-fit:cover;object-position:center center}
+.footer-bottom a{color:inherit;text-decoration:none}.footer-bottom a:hover{color:#a7de83}
+.legal-content{max-width:900px}.legal-content h2{font:500 28px "Lora","Playfair Display",serif;color:#315d2a;margin:30px 0 10px}.legal-content h2:first-of-type{margin-top:0}.legal-content p{line-height:1.7}.legal-content .legal-note{padding:13px 16px;border-radius:12px;background:#fff8dc;color:#705719;font-size:13px;border:1px solid #f2c96b}
+.legal-registration{display:inline-block;color:var(--muted);font-size:.92em;line-height:1.55;margin-top:6px}
 @media(max-width:900px){.footer-grid{grid-template-columns:1.5fr 1fr 1fr}}
 @media(max-width:640px){.footer-grid{grid-template-columns:1fr 1fr}.footer-partner,.footer-grid>div:nth-child(2){grid-column:span 2}}
 .footer-grid{grid-template-columns:2fr 1fr 1.4fr 1fr}
