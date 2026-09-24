@@ -219,3 +219,21 @@ h1,h2,h3,h4,h5,h6,.display,.brand strong,.enrollment-year strong{font-family:"Lo
 .footer-legal a:hover{color:#a7de83}
 .footer-bottom{margin-top:14px}
 @media(max-width:640px){.footer-legal{justify-content:flex-start;margin-top:24px}.footer-bottom{margin-top:14px}}
+.language-switch,.mobile-language-switch{display:flex;align-items:center;gap:3px}
+.language-switch{flex:0 0 auto}
+.language-switch button,.mobile-language-switch button{border:1px solid transparent;background:transparent;color:var(--muted);border-radius:8px;padding:6px 7px;font:700 10px "Plus Jakarta Sans",sans-serif;letter-spacing:.06em;cursor:pointer}
+.language-switch button:hover,.language-switch button.is-active,.mobile-language-switch button:hover,.mobile-language-switch button.is-active{background:#e8f4e3;border-color:#cfe4c8;color:#315d2a}
+.mobile-language-switch{display:none;border-top:1px solid #edf2eb;margin:7px 6px 2px;padding:12px 8px 3px;justify-content:flex-end}
+.mobile-language-switch span{margin-right:auto;color:var(--muted);font-size:11px}
+@media(max-width:900px){.language-switch{display:none}.mobile-language-switch{display:flex}}
+@media(max-width:640px){
+  .contact-hero{gap:30px;padding:18px 0 34px;margin-bottom:38px}
+  .contact-hero .eyebrow{margin-bottom:18px}
+  .contact-hero h1{font-size:clamp(3rem,14vw,4.2rem);line-height:.96}
+  .contact-hero-copy{max-width:34ch;font-size:16px;line-height:1.65}
+}
+@media(max-width:640px){
+  .contact-hero{display:block;border-radius:24px;padding:28px 22px 32px;margin-bottom:34px}
+  .contact-hero h1{font-size:clamp(2.8rem,13vw,4rem);line-height:1}
+  .contact-hero-copy{max-width:none;margin:26px 0 0;font-size:16px;line-height:1.7}
+}
