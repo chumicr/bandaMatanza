@@ -6,214 +6,6 @@ const NAV_ITEMS = [
   { label: 'Hazte socio', href: '#socios' }
 ];
 
-const LANGUAGE_STORAGE_KEY = 'banda-matanza-language';
-let currentLanguage = localStorage.getItem(LANGUAGE_STORAGE_KEY) === 'va' ? 'va' : 'es';
-
-const VALENCIAN_TEXT = {
-  'Saltar al contenido': 'Saltar al contingut',
-  'Inicio': 'Inici',
-  'Escuela': 'Escola',
-  'Banda': 'Banda',
-  'Galería': 'Galeria',
-  'Hazte socio': 'Fes-te soci',
-  'Contacto': 'Contacte',
-  'Matrícula': 'Matrícula',
-  'Proyecto educativo': 'Projecte educatiu',
-  'Profesorado': 'Professorat',
-  'Banda Joven': 'Banda Jove',
-  'Calendario y horarios': 'Calendari i horaris',
-  'Currículum': 'Currículum',
-  'Director': 'Director',
-  'Junta directiva': 'Junta directiva',
-  'Quiero hacer una donación': 'Vull fer una donació',
-  'Contactar': 'Contactar',
-  'La música': 'La música',
-  'nos reúne.': 'ens uneix.',
-  'Un lugar para aprender, tocar y compartir. Descubre una escuela viva y una banda con futuro.': 'Un lloc per a aprendre, tocar i compartir. Descobreix una escola viva i una banda amb futur.',
-  'Conoce la escuela': 'Coneix l’escola',
-  'Contacta con la banda': 'Contacta amb la banda',
-  'Mucho más que una banda': 'Molt més que una banda',
-  'Una casa para la música.': 'Una casa per a la música.',
-  'Formación, repertorio y comunidad en un mismo espacio. Una historia que sigue sonando.': 'Formació, repertori i comunitat en un mateix espai. Una història que continua sonant.',
-  'La banda': 'La banda',
-  'La escuela': 'L’escola',
-  'Sonar juntos cambia todo.': 'Sonar junts ho canvia tot.',
-  'Tu primer compás.': 'El teu primer compàs.',
-  'Clases para todas las edades, desde iniciación hasta conjunto instrumental.': 'Classes per a totes les edats, des de la iniciació fins al conjunt instrumental.',
-  'Descubre': 'Descobreix',
-  'Todo lo que hacemos': 'Tot el que fem',
-  'Escuela de música': 'Escola de música',
-  'Aprende con un equipo docente cercano y especializado.': 'Aprén amb un equip docent pròxim i especialitzat.',
-  'Banda y conciertos': 'Banda i concerts',
-  'Una agrupación activa, abierta a nuevos repertorios.': 'Una agrupació activa, oberta a nous repertoris.',
-  'Una comunidad': 'Una comunitat',
-  'Socios, familias y músicos construyendo cultura.': 'Socis, famílies i músics construint cultura.',
-  'Explorar la escuela': 'Explorar l’escola',
-  'Conocer la banda': 'Conéixer la banda',
-  'Formar parte': 'Formar part',
-  'Agenda': 'Agenda',
-  'Próximas actuaciones': 'Pròximes actuacions',
-  'Ver calendario completo': 'Veure el calendari complet',
-  'Escuela de música · Equipo docente': 'Escola de música · Equip docent',
-  'Quienes hacen sonar la escuela.': 'Qui fa sonar l’escola.',
-  'Profesionales de la música y la educación que acompañan cada paso, desde la primera nota hasta el escenario.': 'Professionals de la música i l’educació que acompanyen cada pas, des de la primera nota fins a l’escenari.',
-  'Dirección académica': 'Direcció acadèmica',
-  'Contactar con la escuela': 'Contactar amb l’escola',
-  'Formación joven': 'Formació jove',
-  'Aprender a tocar.': 'Aprendre a tocar.',
-  'Aprender a escuchar.': 'Aprendre a escoltar.',
-  'La Banda Joven es el primer gran escenario para descubrir la energía de hacer música en equipo.': 'La Banda Jove és el primer gran escenari per a descobrir l’energia de fer música en equip.',
-  'Quiero participar': 'Vull participar',
-  'Ver momentos': 'Veure moments',
-  'Un recorrido compartido': 'Un recorregut compartit',
-  'La música crece cuando se comparte.': 'La música creix quan es comparteix.',
-  'Escuchar': 'Escoltar',
-  'Ensayar': 'Assajar',
-  'Compartir': 'Compartir',
-  'Tu siguiente paso': 'El teu següent pas',
-  'Hablar con la escuela': 'Parlar amb l’escola',
-  'Tarifas': 'Tarifes',
-  'Aprender música': 'Aprendre música',
-  'sin complicaciones.': 'sense complicacions.',
-  'Para empezar': 'Per a començar',
-  'Iniciación': 'Iniciació',
-  'Primer contacto con la música, el ritmo y el juego sonoro.': 'Primer contacte amb la música, el ritme i el joc sonor.',
-  'Tu instrumento': 'El teu instrument',
-  'Formación instrumental': 'Formació instrumental',
-  'Más elegido': 'Més triat',
-  'Tocar juntos': 'Tocar junts',
-  'Agrupación': 'Agrupació',
-  'Incluido': 'Inclòs',
-  'Solicitar información': 'Sol·licitar informació',
-  'Quiero matricularme': 'Vull matricular-me',
-  'Conocer agrupaciones': 'Conéixer les agrupacions',
-  'Calendario': 'Calendari',
-  'Todo el curso, de un vistazo. Consulta clases, ensayos y fechas especiales.': 'Tot el curs, d’un colp d’ull. Consulta classes, assajos i dates especials.',
-  'Próximo concierto': 'Pròxim concert',
-  'Próximo hito': 'Pròxima fita',
-  'Fechas importantes': 'Dates importants',
-  'Próximamente': 'Pròximament',
-  'Concierto': 'Concert',
-  'Conciertos': 'Concerts',
-  'Festivo': 'Festiu',
-  'La música también': 'La música també',
-  'se dirige.': 'es dirigeix.',
-  'Dirección musical': 'Direcció musical',
-  'Trayectoria': 'Trajectòria',
-  'Una dirección': 'Una direcció',
-  'en movimiento.': 'en moviment.',
-  'Quienes dirigieron antes': 'Qui han dirigit abans',
-  'Historia': 'Història',
-  'Una historia': 'Una història',
-  'en movimiento.': 'en moviment.',
-  'Nuestro legado': 'El nostre llegat',
-  'Ver reconocimientos': 'Veure reconeixements',
-  'Reconocimientos': 'Reconeixements',
-  'El camino': 'El camí',
-  'deja huella.': 'deixa empremta.',
-  'Hitos destacados': 'Fites destacades',
-  'Una trayectoria que suena': 'Una trajectòria que sona',
-  'Organización': 'Organització',
-  'Una dirección que': 'Una direcció que',
-  'acompaña.': 'acompanya.',
-  'Junta actual': 'Junta actual',
-  'Equipo de gobierno': 'Equip de govern',
-  'Equipo actual': 'Equip actual',
-  'Las personas detrás del proyecto': 'Les persones darrere del projecte',
-  'Juntas anteriores': 'Juntes anteriors',
-  'Ver composición': 'Veure composició',
-  'Publicación anual': 'Publicació anual',
-  'La revista': 'La revista',
-  'de la casa.': 'de la casa.',
-  'Colección': 'Col·lecció',
-  'Ediciones anteriores': 'Edicions anteriors',
-  'Comunidad · Imágenes': 'Comunitat · Imatges',
-  'Momentos': 'Moments',
-  'que permanecen.': 'que romanen.',
-  'Selección visual': 'Selecció visual',
-  'Dentro de la casa': 'Dins de la casa',
-  'Ver imagen completa': 'Veure la imatge completa',
-  'Contacto · La Matanza': 'Contacte · La Matanza',
-  'Hablemos': 'Parlem',
-  'de música.': 'de música.',
-  '¿Tienes una pregunta? Escríbenos y te ayudaremos a encontrar la mejor forma de participar.': 'Tens una pregunta? Escriu-nos i t’ajudarem a trobar la millor manera de participar.',
-  'Encuentra tu lugar en la banda.': 'Troba el teu lloc a la banda.',
-  'Ven a visitarnos': 'Vine a visitar-nos',
-  'Escríbenos': 'Escriu-nos',
-  'Contacto directo': 'Contacte directe',
-  'Cuéntanos qué necesitas': 'Explica’ns què necessites',
-  'Te responderemos lo antes posible.': 'Et respondrem tan prompte com puguem.',
-  'Enviar mensaje': 'Enviar missatge',
-  'Privacidad': 'Privacitat',
-  'Aviso legal': 'Avís legal',
-  'Saltar al contingut': 'Saltar al contingut',
-  'Apoya la música.': 'Recolza la música.',
-  'Aportación puntual': 'Aportació puntual',
-  'Tu ayuda se convierte en instrumentos, clases y conciertos.': 'La teua ajuda es converteix en instruments, classes i concerts.',
-  'Cualquier cantidad suma.': 'Qualsevol quantitat suma.',
-  'Elige una cantidad': 'Tria una quantitat',
-  'Otra cantidad': 'Una altra quantitat',
-  'Continuar con la donación': 'Continuar amb la donació',
-  'Volver a Hazte socio': 'Tornar a Fes-te soci',
-  'Forma parte de': 'Forma part de',
-  'la asociación.': 'l’associació.',
-  'Datos del socio/a': 'Dades del soci/a',
-  'Nombre': 'Nom',
-  'Apellidos': 'Cognoms',
-  'Fecha de nacimiento': 'Data de naixement',
-  'Dirección': 'Adreça',
-  'Población': 'Població',
-  'Provincia': 'Província',
-  'Código postal': 'Codi postal',
-  'Teléfono': 'Telèfon',
-  'Email': 'Correu electrònic',
-  'Solicitar alta': 'Sol·licitar alta',
-  'Volver al inicio': 'Tornar a l’inici',
-  'Curso': 'Curs',
-  'Solicitud de matrícula': 'Sol·licitud de matrícula',
-  'Solicitud de alta': 'Sol·licitud d’alta',
-  'Preinscripción abierta': 'Preinscripció oberta',
-  'Periodo cerrado': 'Període tancat',
-  'Ahora estamos fuera de plazo.': 'Ara estem fora de termini.',
-  'Plazo de inscripción': 'Termini d’inscripció',
-  'Oferta formativa': 'Oferta formativa',
-  'Encuentra tu lugar': 'Troba el teu lloc',
-  'Especialidades': 'Especialitats',
-  '¿Qué te gustaría tocar?': 'Què t’agradaria tocar?',
-  'Enviar solicitud': 'Enviar sol·licitud',
-  'He leído y acepto la': 'He llegit i accepte la',
-  'información de matrícula': 'informació de matrícula',
-  'aviso de privacidad': 'avís de privacitat',
-  'Autorizo el uso de imágenes en actividades de la asociación.': 'Autoritze l’ús d’imatges en activitats de l’associació.',
-  'El alumno/a es mayor de 18 años.': 'L’alumne/a és major de 18 anys.',
-  'Se matricula en': 'Es matricula en',
-  'Selecciona una opción': 'Selecciona una opció',
-  'Instrumento elegido': 'Instrument triat',
-  'Selecciona un instrumento': 'Selecciona un instrument',
-  'Cuéntanos algo más': 'Explica’ns alguna cosa més',
-  'Nombre y apellidos del alumno/a': 'Nom i cognoms de l’alumne/a',
-  'Correo electrónico de contacto': 'Correu electrònic de contacte',
-  'DNI/NIF/NIE del alumno/a': 'DNI/NIF/NIE de l’alumne/a',
-  'Padre, madre o tutor legal': 'Pare, mare o tutor legal',
-  'DNI/NIF/NIE del tutor': 'DNI/NIF/NIE del tutor',
-  'Nº de cuenta IBAN (opcional)': 'Núm. de compte IBAN (opcional)',
-  'Cualquier cantidad suma. Selecciona el importe que quieras aportar y te prepararemos el siguiente paso cuando la pasarela de pago esté conectada.': 'Qualsevol quantitat suma. Selecciona l’import que vulgues aportar i prepararem el pas següent quan la passarel·la de pagament estiga connectada.',
-  'La pasarela de pago todavía no está conectada. Este formulario no realiza ningún cargo.': 'La passarel·la de pagament encara no està connectada. Aquest formulari no fa cap càrrec.',
-  'Responsable del tratamiento': 'Responsable del tractament',
-  'Para qué utilizamos tus datos': 'Per a què utilitzem les teues dades',
-  'Base y conservación': 'Base i conservació',
-  'Destinatarios': 'Destinataris',
-  'Tus derechos': 'Els teus drets',
-  'Cookies y servicios externos': 'Cookies i serveis externs',
-  'Actualizaciones': 'Actualitzacions',
-  'Datos identificativos': 'Dades identificatives',
-  'Condiciones de uso': 'Condicions d’ús',
-  'Propiedad intelectual': 'Propietat intel·lectual',
-  'Enlaces externos': 'Enllaços externs',
-  'Responsabilidad y disponibilidad': 'Responsabilitat i disponibilitat',
-  'Legislación aplicable': 'Legislació aplicable',
-  'Cualquier cantidad suma.': 'Qualsevol quantitat suma.'
-};
 
 const MEDIA = {
   hero: 'assets/portada.jpg',
@@ -231,7 +23,7 @@ function renderNavigation(element, items) {
     if (!item.children) return `<div class="nav-item"><a class="nav-link" href="${item.href}">${item.label}</a></div>`;
     const children = item.children.map(([label, href]) => `<a href="${href}">${label}</a>`).join('');
     return `<div class="nav-item"><button class="nav-link nav-parent" type="button" aria-haspopup="true" aria-expanded="false">${item.label}<span class="chevron" aria-hidden="true">&#x2304;</span></button><div class="dropdown">${children}</div></div>`;
-  }).join('') + '<div class="mobile-language-switch" aria-label="Idioma de la web"><span>Idioma</span><button type="button" data-language="es" aria-pressed="true">ESP</button><button type="button" data-language="va" aria-pressed="false">VAL</button></div>';
+  }).join('');
 }
 
 function setupNavigation(navElement, menuButton) {
@@ -311,7 +103,6 @@ const navEl = document.querySelector('#main-nav');
 const img = MEDIA;
 renderNavigation(navEl, NAV_ITEMS);
 setupNavigation(navEl, document.querySelector('.menu-toggle'));
-setupLanguageSwitcher();
 
 // ---------------------------------------------------------------------------
 // Page composition. Each route returns a complete, accessible view.
@@ -485,7 +276,7 @@ function renderCalendarMonth(monthDate, events = calendarEvents) {
   const now = new Date();
   const currentMonth = new Date(now.getFullYear(), now.getMonth(), 1);
   if (previous) previous.disabled = monthDate <= currentMonth;
-  const maximumMonth = new Date(now.getFullYear(), now.getMonth() + 12, 1);
+  const maximumMonth = new Date(now.getFullYear(), now.getMonth() + 1, 1);
   if (next) next.disabled = monthDate >= maximumMonth;
 }
 
@@ -503,51 +294,10 @@ function setupCalendarControls() {
     renderCalendarMonth(calendarCursor);
   });
   buttons[1]?.addEventListener('click', () => {
-    const maximumMonth = new Date(new Date().getFullYear(), new Date().getMonth() + 12, 1);
+    const maximumMonth = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 1);
     if (calendarCursor >= maximumMonth) return;
     calendarCursor = new Date(calendarCursor.getFullYear(), calendarCursor.getMonth() + 1, 1);
     renderCalendarMonth(calendarCursor);
-  });
-}
-
-function updateLanguageControls() {
-  document.querySelectorAll('[data-language]').forEach((button) => {
-    const active = button.dataset.language === currentLanguage;
-    button.setAttribute('aria-pressed', String(active));
-    button.classList.toggle('is-active', active);
-  });
-}
-
-function applyCurrentLanguage() {
-  document.documentElement.lang = currentLanguage === 'va' ? 'ca' : 'es';
-  document.querySelector('.main-nav')?.setAttribute('aria-label', currentLanguage === 'va' ? 'Navegació principal' : 'Navegación principal');
-  document.querySelector('.menu-toggle')?.setAttribute('aria-label', currentLanguage === 'va' ? 'Obrir menú' : 'Abrir menú');
-  if (currentLanguage === 'va') {
-    const replacements = Object.entries(VALENCIAN_TEXT).sort(([a], [b]) => b.length - a.length);
-    const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
-    const nodes = [];
-    let node;
-    while ((node = walker.nextNode())) {
-      if (!node.parentElement?.closest('script,style,noscript,[data-no-translate]')) nodes.push(node);
-    }
-    nodes.forEach((textNode) => {
-      let value = textNode.nodeValue;
-      replacements.forEach(([source, target]) => { value = value.replaceAll(source, target); });
-      textNode.nodeValue = value;
-    });
-  }
-  updateLanguageControls();
-}
-
-function setupLanguageSwitcher() {
-  document.addEventListener('click', (event) => {
-    const button = event.target.closest('[data-language]');
-    if (!button) return;
-    const language = button.dataset.language;
-    if (!language || language === currentLanguage) return;
-    currentLanguage = language;
-    localStorage.setItem(LANGUAGE_STORAGE_KEY, currentLanguage);
-    window.location.reload();
   });
 }
 
@@ -744,7 +494,6 @@ function applyRemoteEvents(events) {
     if (strong) strong.textContent = `${next.day} ${next.month.toLowerCase()}`;
     if (small) small.textContent = next.title;
   }
-  applyCurrentLanguage();
 }
 
 async function syncGlissandooEvents() {
@@ -843,6 +592,10 @@ function syncDirectorName() {
   const heading = document.querySelector('.director-bio h2');
   if (caption) caption.textContent = `${name} · Director titular`;
   if (heading) heading.textContent = name;
+  if (caption) caption.remove();
+  document.querySelector('.director-bio .btn')?.remove();
+  const photo = document.querySelector('.director-photo');
+  if (photo) photo.style.backgroundImage = "url('assets/presidente-unknown.png')";
 }
 
 // ---------------------------------------------------------------------------
@@ -865,13 +618,53 @@ function render() {
   document.querySelector('main').innerHTML = html;
   if (window.presidentsCarouselTimer) clearInterval(window.presidentsCarouselTimer);
   if (key === 'junta-directiva') {
+    document.querySelector('.board-term')?.remove();
+    const boardLead = document.querySelector('.board-lead-copy');
+    if (boardLead) {
+      boardLead.querySelector('.pill').textContent = 'Presidente';
+      boardLead.querySelector('h2').textContent = 'Cristian Chumillas García';
+      boardLead.querySelector('.board-caption').textContent = 'Presidente · Asociación Musical La Matanza';
+    }
+    const boardGrid = document.querySelector('.board-grid');
+    setTimeout(() => {
+      document.querySelector('.board-lead-image')?.style.setProperty('background-image', "url('assets/presidente-unknown.png')");
+      document.querySelectorAll('.board-member-avatar').forEach(avatar => avatar.style.backgroundImage = "url('assets/presidente-unknown.png')");
+    }, 0);
+    if (boardGrid) {
+      const boardMembers = [
+        ['Secretaria', 'Carmen Valverde Ruiz', img.classroom],
+        ['Tesorero', 'Trino García Escudero', img.music],
+        ['Vocal', 'María José Valverde Tristán', img.concert]
+      ];
+      boardGrid.innerHTML = boardMembers.map(([role, name, image]) => `<article class="board-member"><div class="board-member-avatar" style="background-image:url('${image}')"></div><div><span>${role}</span><h3>${name}</h3><small>Junta directiva · 2024—2028</small></div></article>`).join('');
+    }
     document.querySelector('main').insertAdjacentHTML('beforeend', `<section class="presidents-archive"><div class="presidents-archive-head"><div><p class="eyebrow">Memoria de la Asociación</p><h2>Presidentes que nos precedieron</h2></div><p>Cada etapa de la Asociación ha contado con personas comprometidas con la música, la escuela y la vida cultural de La Matanza.</p></div><div class="presidents-archive-intro"><span class="presidents-archive-mark">✦</span><div><h3>Un legado construido entre todos</h3><p>Estamos reuniendo la información de las presidencias anteriores para completar este archivo histórico y reconocer a quienes han dedicado su tiempo al proyecto.</p></div></div><div class="presidents-carousel"><button class="presidents-carousel-button is-prev" type="button" aria-label="Presidencia anterior">←</button><div class="presidents-carousel-viewport"><div class="presidents-archive-grid presidents-carousel-track"><article><span>2020—2024</span><strong>Presidencia anterior</strong><small>Archivo histórico en preparación</small></article><article><span>2016—2020</span><strong>Presidencia anterior</strong><small>Archivo histórico en preparación</small></article><article><span>2012—2016</span><strong>Presidencia anterior</strong><small>Archivo histórico en preparación</small></article><article><span>2008—2012</span><strong>Presidencia anterior</strong><small>Archivo histórico en preparación</small></article><article><span>2004—2008</span><strong>Presidencia anterior</strong><small>Archivo histórico en preparación</small></article><article><span>2000—2004</span><strong>Presidencia anterior</strong><small>Archivo histórico en preparación</small></article></div></div><button class="presidents-carousel-button is-next" type="button" aria-label="Siguiente presidencia">→</button></div></section>`);
+    const boardPeriodRoles = ['Presidencia', 'Secretaría', 'Tesorería', 'Vocalías'];
+    document.querySelectorAll('.board-years button').forEach((button) => {
+      button.addEventListener('click', () => {
+        const period = button.querySelector('span')?.textContent.trim() || 'Periodo anterior';
+        const modal = document.createElement('div');
+        modal.className = 'board-period-modal';
+        modal.setAttribute('role', 'dialog');
+        modal.setAttribute('aria-modal', 'true');
+        modal.innerHTML = `<div class="board-period-dialog"><button class="board-period-close" type="button" aria-label="Cerrar ventana">×</button><p class="eyebrow">Archivo histórico</p><h2>Composición ${period}</h2><p class="board-period-note">Cargos correspondientes a este periodo. La información de las personas se incorporará al completar el archivo histórico.</p><ul>${boardPeriodRoles.map(role => `<li><strong>${role}</strong><span>Información pendiente de completar</span></li>`).join('')}</ul></div>`;
+        let closeOnEscape;
+        const closeModal = () => { modal.remove(); document.body.classList.remove('modal-open'); if (closeOnEscape) document.removeEventListener('keydown', closeOnEscape); };
+        modal.addEventListener('click', (event) => { if (event.target === modal) closeModal(); });
+        modal.querySelector('.board-period-close')?.addEventListener('click', closeModal);
+        closeOnEscape = (event) => { if (event.key === 'Escape') closeModal(); };
+        document.addEventListener('keydown', closeOnEscape);
+        document.body.append(modal);
+        document.body.classList.add('modal-open');
+        modal.querySelector('.board-period-close')?.focus();
+      });
+    });
     const carousel = document.querySelector('.presidents-carousel');
     carousel?.querySelectorAll('.presidents-carousel-button').forEach(button => button.remove());
     const track = carousel?.querySelector('.presidents-carousel-track');
     const viewport = carousel?.querySelector('.presidents-carousel-viewport');
     const cards = track ? [...track.children] : [];
-    const presidentImages = ['assets/presidente-2016-2021.png', img.people, img.conductor, img.classroom, img.music, img.concert];
+    const presidentImages = ['assets/presidente-2016-2021.png', 'assets/presidente-unknown.png', 'assets/presidente-unknown.png', 'assets/presidente-unknown.png', 'assets/presidente-unknown.png', 'assets/presidente-unknown.png'];
     const presidentData = [
       ['2016—2021', 'Ricardo Pina Bernabeu', 'A la música le das tiempo, esfuerzo y corazón; y, a cambio, siempre te devuelve mucho más de lo que le entregas. Las asociaciones musicales son de los pocos espacios donde conviven y cooperan distintas generaciones en una misma banda, compartiendo espacio y momentos.'],
       ['2020—2024', 'Nombre y apellidos', 'Descripción breve de su etapa al frente de la Asociación.'],
@@ -930,7 +723,7 @@ function render() {
     const track = carousel?.querySelector('.presidents-carousel-track');
     const viewport = carousel?.querySelector('.presidents-carousel-viewport');
     const cards = track ? [...track.children] : [];
-    const directorImages = [img.conductor, img.people, img.classroom, img.music, img.concert, img.people];
+    const directorImages = ['assets/presidente-unknown.png', 'assets/presidente-unknown.png', 'assets/presidente-unknown.png', 'assets/presidente-unknown.png', 'assets/presidente-unknown.png', 'assets/presidente-unknown.png'];
     const directorDescriptions = ['Dirección musical y acompañamiento de la agrupación.', 'Una etapa de crecimiento artístico y trabajo colectivo.', 'Repertorio, ensayos y conciertos al servicio de la banda.', 'Una mirada musical ligada a la comunidad.', 'Trayectoria y compromiso con la formación musical.', 'Información histórica pendiente de completar.'];
     cards.forEach((card, index) => {
       const avatar = document.createElement('div');
@@ -958,8 +751,15 @@ function render() {
     viewport?.addEventListener('pointercancel', finishDrag);
     window.presidentsCarouselTimer = setInterval(() => moveCarousel(1), 15000);
   }
+  if (key === 'galeria') document.querySelector('.gallery-count')?.remove();
   const associationYears = document.querySelector('.history-stamp strong');
-  if (associationYears && key === 'nuestra-historia') associationYears.textContent = getAssociationYears();
+  if (associationYears && key === 'nuestra-historia') {
+    associationYears.textContent = getAssociationYears();
+    const stamp = document.querySelector('.history-stamp');
+    document.querySelector('.history-intro > div:first-child')?.append(stamp);
+    stamp?.classList.add('history-stamp-inline');
+    document.querySelector('.history-section-head > p')?.remove();
+  }
   document.querySelectorAll('a[href="#curriculum"]').forEach(link => { link.href = '#nuestra-historia'; });
   document.querySelectorAll('h3').forEach(heading => {
     if (heading.textContent === 'Currículum') heading.textContent = 'Nuestra Historia';
@@ -978,12 +778,9 @@ function render() {
   syncDirectorName();
   syncDonationLink();
   removeButtonArrows(document);
-  applyCurrentLanguage();
   setActiveNavigation(navEl, key);
   const routeTitle = key === 'inicio' ? 'Asociación Musical La Matanza' : (key.replaceAll('-', ' ').replace(/\b\w/g, c => c.toUpperCase())) + ' · Asociación Musical La Matanza';
-  document.title = currentLanguage === 'va'
-    ? Object.entries(VALENCIAN_TEXT).sort(([a], [b]) => b.length - a.length).reduce((value, [source, target]) => value.replaceAll(source, target), routeTitle)
-    : routeTitle;
+  document.title = routeTitle;
   window.scrollTo({top:0,behavior:'smooth'});
   document.querySelector('.main-nav').classList.remove('open');
   document.querySelector('.menu-toggle').setAttribute('aria-expanded','false');

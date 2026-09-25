@@ -220,13 +220,6 @@ h1,h2,h3,h4,h5,h6,.display,.brand strong,.enrollment-year strong{font-family:"Lo
 .footer-legal a:hover{color:#a7de83}
 .footer-bottom{margin-top:14px}
 @media(max-width:640px){.footer-legal{justify-content:flex-start;margin-top:24px}.footer-bottom{margin-top:14px}}
-.language-switch,.mobile-language-switch{display:flex;align-items:center;gap:3px}
-.language-switch{flex:0 0 auto}
-.language-switch button,.mobile-language-switch button{border:1px solid transparent;background:transparent;color:var(--muted);border-radius:8px;padding:6px 7px;font:700 10px "Plus Jakarta Sans",sans-serif;letter-spacing:.06em;cursor:pointer}
-.language-switch button:hover,.language-switch button.is-active,.mobile-language-switch button:hover,.mobile-language-switch button.is-active{background:#e8f4e3;border-color:#cfe4c8;color:#315d2a}
-.mobile-language-switch{display:none;border-top:1px solid #edf2eb;margin:7px 6px 2px;padding:12px 8px 3px;justify-content:flex-end}
-.mobile-language-switch span{margin-right:auto;color:var(--muted);font-size:11px}
-@media(max-width:900px){.language-switch{display:none}.mobile-language-switch{display:flex}}
 @media(max-width:640px){
   .contact-hero{gap:30px;padding:18px 0 34px;margin-bottom:38px}
   .contact-hero .eyebrow{margin-bottom:18px}
@@ -248,7 +241,40 @@ html,body{max-width:100%;overflow-x:hidden;overflow-x:clip}body{position:relativ
 /* Responsive global: ninguna página debe generar scroll horizontal. */
 html,body{width:100%;max-width:100%;overflow-x:hidden;overflow-x:clip}.site-header,main,.site-footer{width:100%;max-width:100%;overflow-x:hidden;overflow-x:clip}img,svg,video,iframe{max-width:100%}
 @media(max-width:900px){.page,.hero,.home-band,.site-footer,.footer-grid,.header-inner,.main-nav{max-width:100%;min-width:0}.page *,.hero *,.home-band *,.site-footer *{min-width:0;max-width:100%;overflow-wrap:anywhere}.page h1,.page h2,.page h3,.page h4,.page p,.page a,.page span,.page strong,.hero h1,.hero h2,.hero h3,.hero p,.hero a,.home-band h1,.home-band h2,.home-band h3,.home-band p{overflow-wrap:anywhere;word-break:normal}.cards,.event-list,.people-grid,.feature-grid,.contact-grid,.gallery-grid,.pricing-grid,.board-grid,.faculty-grid,.schedule-layout,.donation-layout,.enroll-programs,.enroll-info,.enroll-intro,.history-intro,.history-lead,.history-section-head,.history-legacy{width:100%;max-width:100%;min-width:0}.card,.event,.person,.feature-card,.contact-card,.price-card,.board-member,.faculty-person,.history-timeline article,.schedule-card,.donation-panel,.enrollment-panel{min-width:0;max-width:100%}.form input,.form textarea,.enrollment-form input,.enrollment-form select,.enrollment-form textarea,.donation-form input{max-width:100%;box-sizing:border-box}}
+
+/* La junta directiva debe tener una presencia visual acorde a su importancia. */
+.board-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:22px}
+.board-member{min-height:148px;padding:22px;gap:20px;border-radius:24px}
+.board-member-avatar{width:100px;height:100px;flex-basis:100px;border-radius:20px}
+.board-member h3{font-size:28px;line-height:1.08;margin:6px 0 9px}
+.board-member small{font-size:12px}
+@media(max-width:900px){.board-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.board-member{padding:18px;gap:16px}.board-member-avatar{width:84px;height:84px;flex-basis:84px}}
+@media(max-width:640px){.board-grid{grid-template-columns:1fr;gap:16px}.board-member{min-height:126px;padding:16px;border-radius:20px}.board-member-avatar{width:76px;height:76px;flex-basis:76px;border-radius:17px}.board-member h3{font-size:24px}}
+
+/* Las fotografías ocupan la mitad izquierda de cada tarjeta. */
+.board-member{display:grid;grid-template-columns:50% 1fr;gap:0;padding:0;min-height:190px;overflow:hidden}
+.board-member-avatar{width:auto;height:100%;min-height:190px;flex-basis:auto;border-radius:0;background-position:center top}
+.board-member>div:last-child{display:flex;flex-direction:column;justify-content:center;padding:22px 20px}
+@media(max-width:900px){.board-member{min-height:170px}.board-member-avatar{min-height:170px}.board-member>div:last-child{padding:18px 16px}}
+@media(max-width:640px){.board-member{min-height:155px}.board-member-avatar{min-height:155px}.board-member>div:last-child{padding:16px 14px}.board-member h3{font-size:22px}}
+
 @media(max-width:640px){.page,.hero{padding-left:20px;padding-right:20px}.home-band{margin-left:0;margin-right:0}.section-head,.history-section-head,.board-section-head,.pricing-footer{display:block}.section-head>p,.history-section-head>p,.board-section-head>p,.pricing-footer>p{margin-top:15px;max-width:100%}.footer-grid{grid-template-columns:1fr;min-width:0}.btn,.header-cta,.header-donation{max-width:100%;white-space:normal;text-align:center}}
+
+.board-period-modal{position:fixed;inset:0;z-index:60;display:grid;place-items:center;padding:24px;background:rgba(18,34,22,.72);backdrop-filter:blur(6px)}
+.board-period-dialog{position:relative;width:min(100%,620px);max-height:min(720px,90vh);overflow:auto;background:#fff;border-radius:28px;padding:clamp(28px,5vw,52px);box-shadow:0 28px 80px rgba(0,0,0,.25)}
+.board-period-close{position:absolute;top:16px;right:18px;width:38px;height:38px;border:0;border-radius:50%;background:#f1f7ee;color:#315d2a;font-size:28px;line-height:1;cursor:pointer}
+.board-period-dialog h2{font:600 clamp(2rem,4vw,3.4rem)/1.05 "Playfair Display",serif;margin:0 0 16px;color:#172019}
+.board-period-note{max-width:490px;color:#6e7a6c;font-size:14px;line-height:1.6;margin:0 0 25px}
+.board-period-dialog ul{display:grid;gap:10px;list-style:none;margin:0;padding:0}
+.board-period-dialog li{display:flex;justify-content:space-between;gap:18px;align-items:center;border:1px solid #e0eae0;border-radius:15px;padding:15px 17px}
+.board-period-dialog li strong{font-size:12px;color:#4f8740;text-transform:uppercase;letter-spacing:.08em}
+.board-period-dialog li span{font-size:13px;color:#7b8779;text-align:right}
+body.modal-open{overflow:hidden}
+@media(max-width:640px){.board-period-modal{padding:15px}.board-period-dialog{border-radius:22px;padding:34px 20px 24px}.board-period-dialog li{display:block}.board-period-dialog li span{display:block;text-align:left;margin-top:5px}}
+
+.main-nav a.nav-link[href="#socios"]{color:#4f8740;font-weight:800}
+.main-nav a.nav-link[href="#socios"].active{color:#fff;background:var(--ink)}
+
 
 /* Hito destacado: fundación oficial de la Asociación en 2008. */
 .history-timeline article:nth-child(3){background:#f1faed;border:1px solid #b9dcae;border-radius:18px;padding:24px 22px 38px;margin-left:0;width:100%;box-sizing:border-box}.history-timeline article:nth-child(3) .history-year{color:#315d2a;font-size:30px}.history-timeline article:nth-child(3) .history-copy h3{color:#315d2a}.history-timeline article:nth-child(3) .history-dot{width:19px;height:19px;left:-52px;top:1px;background:#6ca653;box-shadow:0 0 0 6px #f1faed,0 0 0 8px #b9dcae}@media(max-width:640px){.history-timeline article:nth-child(3){margin-left:0;padding:20px 16px 30px;width:100%}.history-timeline article:nth-child(3) .history-dot{left:-31px}}
@@ -266,3 +292,6 @@ html,body{width:100%;max-width:100%;overflow-x:hidden;overflow-x:clip}.site-head
  .presidents-archive-grid .president-avatar{height:250px;flex-basis:250px;background-position:center top}@media(max-width:640px){.presidents-archive-grid .president-avatar{height:290px;flex-basis:290px;background-position:center top}}
  .president-card-quote .president-description{position:relative;padding:18px 18px 16px;margin-top:18px;border-left:3px solid #a7de83;background:#f8fbf5;color:#315d2a;font:italic 15px/1.65 "Lora","Playfair Display",serif}.president-card-quote .president-description:before{content:"“";font:500 34px/1 "Lora","Playfair Display",serif;color:#6ca653;position:absolute;left:7px;top:-4px}.president-card-quote .president-description:after{content:"”";color:#6ca653;margin-left:3px;font-size:20px}
  .president-card-quote .president-description{box-sizing:border-box;width:100%;max-width:100%;margin:20px 0 0;padding:20px 22px 18px 32px;border-radius:0 12px 12px 0}.president-card-quote .president-description:before{left:12px;top:1px}@media(max-width:640px){.president-card-quote .president-description{margin-top:18px;padding:18px 17px 16px 28px}.president-card-quote .president-description:before{left:9px}}
+ .history-stamp-inline{width:auto;height:auto;min-height:0;display:inline-flex;align-items:center;gap:10px;padding:10px 16px;border-radius:99px;transform:none;margin:24px 0 0;background:#f1faed;border-color:#b9dcae}.history-stamp-inline strong{font-size:25px}.history-stamp-inline span{margin:0;font-size:10px;line-height:1.15;text-align:left}@media(max-width:640px){.history-stamp-inline{margin-top:20px;padding:9px 14px}.history-stamp-inline strong{font-size:23px}}
+@media(max-width:640px){.history-stamp-inline{display:flex;width:max-content;margin-left:auto;margin-right:auto}}
+ .history-stamp-inline{display:flex;width:max-content;margin-left:auto;margin-right:auto}
