@@ -1,33 +1,40 @@
 # Asociación Musical La Matanza
 
-Web estática responsive para una escuela y banda de música.
+Web estática responsive para la Asociación Musical Nuestra Señora del Remedio de La Matanza.
 
 ## Estructura
 
 ```text
 .
-├── index.html           # Shell HTML, cabecera y pie
-├── app.js               # Router hash, composición e interacciones
-├── styles.css           # Sistema visual y responsive
-└── src/
-    ├── config.js        # Navegación y recursos multimedia
-    └── ui.js            # Componentes de navegación e interacciones
+├── index.html      # Shell HTML, cabecera y pie
+├── app.js          # Arranque, plantillas y composición de páginas
+├── styles.css      # Sistema visual y responsive
+├── src/
+│   ├── components/ # Navegación y animaciones compartidas
+│   ├── data/       # Configuración y datos públicos
+│   ├── pages/      # Helpers comunes de las vistas
+│   └── utils/      # Router y utilidades de aplicación
+└── assets/         # Logotipos y fotografías locales
 ```
 
 ## Desarrollo local
 
-Desde esta carpeta se puede levantar con cualquier servidor estático. Por ejemplo:
+La web no necesita dependencias externas para ejecutarse. Desde esta carpeta:
 
 ```powershell
-node -e "const http=require('http'),fs=require('fs'),path=require('path');http.createServer((req,res)=>{const file=path.join(process.cwd(),req.url==='/'?'index.html':req.url.split('?')[0]);fs.readFile(file,(err,data)=>{if(err){res.statusCode=404;res.end('Not found');return}res.end(data)})}).listen(4173,()=>console.log('http://localhost:4173'))"
+npm run dev
 ```
 
-El arranque principal es JavaScript clásico para que la web funcione también al abrir `index.html` directamente en local.
+Después, abre <http://localhost:4173>.
 
-## Convenciones
+## Rutas principales
 
-- Las rutas de la interfaz se gestionan mediante hash (`#inicio`, `#calendario`, etc.).
-- La navegación y las imágenes viven en `src/config.js`.
-- Las interacciones reutilizables están documentadas y centralizadas en `src/ui.js`; el arranque compatible se mantiene en `app.js`.
-- Las páginas se mantienen agrupadas en `app.js` para facilitar una futura migración a componentes independientes.
-- El contenido visual es ficticio y está preparado para conectarse posteriormente a un CMS.
+Las páginas utilizan rutas hash, por ejemplo `#inicio`, `#nuestra-historia`, `#director`, `#junta-directiva`, `#galeria` y `#contacto`. La ruta antigua `#curriculum` se redirige a `#nuestra-historia`.
+
+## Integraciones
+
+- La matrícula se gestiona mediante Google Forms.
+- Contacto, alta de socio y donaciones preparan un correo dirigido a `bandalamatanza@gmail.com`.
+- La agenda intenta consultar Glissandoo y conserva datos locales de respaldo si la consulta externa no está disponible.
+
+Antes de publicar, hay que confirmar los datos legales, las fotografías y las fechas de la agenda.
