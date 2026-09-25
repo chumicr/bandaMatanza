@@ -126,6 +126,7 @@ main{overflow:hidden}.page{max-width:1320px;padding:104px clamp(24px,5vw,72px) 1
 .enrollment-form input[type="date"]:focus{background:#f1faed}
 .enrollment-form input[type="date"]::-webkit-datetime-edit{color:#315d2a}
 .enrollment-form input[type="date"]::-webkit-calendar-picker-indicator{opacity:0;cursor:pointer;width:31px;height:31px;padding:0;margin-right:2px}
+.google-form-embed{background:#fff;border:1px solid #dcebd7;border-radius:18px;overflow:hidden}.google-form-embed iframe{display:block;width:100%;min-height:1100px;border:0}.google-form-embed p{padding:0 24px 24px;margin:0;color:var(--muted);font-size:12px}.google-form-embed a{color:#315d2a;font-weight:700}
 .reveal{opacity:1;transform:none;transition:none}@media(min-width:901px){.reveal{opacity:0;transform:translateY(14px);transition:opacity .6s ease,transform .6s ease}.reveal.is-visible{opacity:1;transform:none}}
 @media(max-width:900px){.page,.hero{animation:none}}
 .enrollment-year strong{font-size:clamp(40px,5vw,64px);letter-spacing:-.04em;white-space:nowrap}

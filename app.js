@@ -224,6 +224,8 @@ const MEDIA = {
   classroom: 'https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=900&q=80'
 };
 
+const GOOGLE_MATRICULA_FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSe4RqX9fAiKJMHloaDeJsIDnBM1OJbAM5EcYm_EAPrhZkgsSQ/viewform?embedded=true';
+
 function renderNavigation(element, items) {
   element.innerHTML = items.map((item) => {
     if (!item.children) return `<div class="nav-item"><a class="nav-link" href="${item.href}">${item.label}</a></div>`;
@@ -837,6 +839,17 @@ function syncDirectorName() {
 // ---------------------------------------------------------------------------
 // Hash router. The site stays static and deployable without a backend.
 // ---------------------------------------------------------------------------
+function setupGoogleEnrollmentForm() {
+  if (!location.hash.startsWith('#solicitud-matricula')) return;
+  const form = document.querySelector('.enrollment-form');
+  if (!form) return;
+
+  const embed = document.createElement('div');
+  embed.className = 'google-form-embed';
+  embed.innerHTML = `<iframe src="${GOOGLE_MATRICULA_FORM_URL}" title="Formulario de solicitud de matrícula" loading="lazy">Cargando el formulario de matrícula…</iframe><p>Si el formulario no se muestra, puedes <a href="${GOOGLE_MATRICULA_FORM_URL.replace('?embedded=true', '')}" target="_blank" rel="noopener noreferrer">abrirlo en una pestaña nueva</a>.</p>`;
+  form.replaceWith(embed);
+}
+
 function render() {
   const key = (location.hash || '#inicio').slice(1);
   const html = templates[key] ? templates[key]() : templates.inicio();
@@ -845,6 +858,7 @@ function render() {
   setupGalleryLightbox(document.querySelector('main'));
   setupCalendarControls();
   setupEnrollmentForm();
+  setupGoogleEnrollmentForm();
   setupDonationForm();
   syncEnrollmentPeriodCopy();
   syncCurrentYearLabels();
