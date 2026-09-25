@@ -15,7 +15,7 @@ export const NAV_ITEMS = [
       ['Precios', '#precios']
     ]
   },
-  { label: 'Banda', href: '#banda', children: [['Curr\u00edculum', '#curriculum'], ['Director', '#director'], ['Galardones', '#galardones']] },
+  { label: 'Banda', href: '#banda', children: [['Nuestra Historia', '#nuestra-historia'], ['Director', '#director'], ['Galardones', '#galardones']] },
   { label: 'Sociedad', href: '#sociedad', children: [['Hazte socio', '#socios'], ['Junta directiva', '#junta-directiva'], ['Revista', '#revista']] },
   { label: 'Galer\u00eda', href: '#galeria' },
   { label: 'Contacto', href: '#contacto' }
