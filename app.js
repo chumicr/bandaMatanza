@@ -364,6 +364,12 @@ templates['donaciones'] = () => page(title('Hazte socio', 'Apoya la música.', '
 templates['nuestra-historia'] = () => page(`<div class="history-intro"><div><p class="eyebrow">Banda · Historia</p><h1>Nuestra historia<br><span>sigue sonando.</span></h1><p>Lo que comenzó con la ilusión de acercar la música a los niños y jóvenes de La Matanza ha crecido hasta convertirse en un proyecto compartido por músicos, familias y vecinos. Más de dos décadas de aprendizaje, conciertos y momentos que forman parte de la historia de nuestro pueblo.</p></div><div class="history-stamp"><strong>18</strong><span>años como<br>asociación</span></div></div><div class="history-lead"><div class="history-lead-number">2005</div><div><span class="pill">Los primeros pasos</span><h2>La música empezó a reunirnos.</h2><p>La historia de nuestra banda comenzó gracias a la iniciativa de <strong>Antonio Bailén y Charo Fuentes</strong>, profesores de música y vecinos de La Matanza. Con esfuerzo e ilusión empezaron a acercar la enseñanza musical a los niños y jóvenes de la localidad, ofreciendo una oportunidad que hasta entonces no era fácil encontrar en nuestro entorno.</p><p>En <strong>2005</strong> llegó uno de los primeros grandes momentos: la presentación pública de la banda con su <strong>primer Concierto de Navidad en la Iglesia de La Matanza</strong>, bajo la dirección de Charo Fuentes. Aquel concierto fue mucho más que una actuación: fue el comienzo de una historia que seguiría creciendo año tras año.</p></div></div><div class="history-section-head"><div><p class="eyebrow">Nuestra historia</p><h2>Los momentos que nos han traído hasta aquí</h2></div><p>De los primeros alumnos y ensayos a una asociación plenamente integrada en la vida cultural de La Matanza.</p></div><div class="history-timeline"><article><div class="history-year">2006</div><div class="history-dot"></div><div class="history-copy"><span>Primeros años</span><h3>La banda sale a la calle</h3><p>La agrupación comienza a participar de manera habitual en la vida de La Matanza: procesiones, conciertos de fin de curso, fiestas patronales, pasacalles y otros actos hacen que la música empiece a ocupar un lugar cada vez más importante en el pueblo.</p></div></article><article><div class="history-year">2007</div><div class="history-dot"></div><div class="history-copy"><span>Dirección musical</span><h3>Una nueva etapa</h3><p>Charo Fuentes cede la dirección de la banda a <strong>Rafael González García</strong>, iniciándose una nueva etapa en la que la agrupación continúa creciendo tanto musicalmente como en número de componentes.</p></div></article><article><div class="history-year">2008</div><div class="history-dot"></div><div class="history-copy"><span>Fundación</span><h3>Nace oficialmente nuestra Asociación</h3><p>El crecimiento de la escuela, de la banda y del número de alumnos hizo necesario dar un paso adelante. El <strong>11 de mayo de 2008</strong> se constituye oficialmente la <strong>Asociación Musical Nuestra Señora del Remedio de La Matanza</strong>, con su acta fundacional y su primera junta directiva.</p><p>La música dejaba de ser únicamente una iniciativa nacida de un grupo de profesores y alumnos para convertirse en un proyecto cultural organizado y con vocación de futuro.</p></div></article><article><div class="history-year">2010</div><div class="history-dot"></div><div class="history-copy"><span>Federación</span><h3>Formamos parte de una gran familia musical</h3><p>El <strong>16 de enero de 2010</strong>, la Asociación pasa a formar parte de la <strong>Federación de Sociedades Musicales de la Comunitat Valenciana</strong>.</p><p>La incorporación a la Federación permite participar en encuentros, conciertos, intercambios y actividades junto a otras sociedades musicales, reforzando la formación de nuestros músicos y llevando el nombre de La Matanza más allá de nuestro entorno más cercano.</p></div></article><article><div class="history-year">2018</div><div class="history-dot"></div><div class="history-copy"><span>Patrimonio cultural</span><h3>Un reconocimiento compartido</h3><p>El <strong>25 de mayo de 2018</strong> se produce un reconocimiento de especial importancia para el movimiento musical valenciano. El Decreto 68/2018 del Consell declara <strong>Bien de Interés Cultural Inmaterial la tradición musical popular valenciana materializada por las Sociedades Musicales de la Comunitat Valenciana</strong>.</p><p>Como sociedad musical valenciana, nuestra Asociación forma parte de una tradición basada en la enseñanza, la convivencia, el asociacionismo y la transmisión de la música de generación en generación.</p></div></article><article><div class="history-year">Hoy</div><div class="history-dot"></div><div class="history-copy"><span>Presente y futuro</span><h3>Una historia que continúa</h3><p>Desde aquellos primeros alumnos hasta las nuevas generaciones que hoy comienzan su formación, la <strong>Escuela de Música</strong> continúa siendo uno de los pilares fundamentales de nuestra Asociación.</p><p>La banda sigue acompañando a La Matanza y participando en conciertos, procesiones, pasacalles, fiestas y encuentros musicales. Pero, sobre todo, sigue siendo un espacio en el que niños, jóvenes y adultos aprenden, conviven y comparten una misma pasión.</p><p>Cada músico que se incorpora, cada alumno que toca sus primeras notas y cada actuación compartida con nuestros vecinos añade una nueva página a nuestra historia.</p></div></article></div><div class="history-legacy"><div><p class="eyebrow">Nuestro legado</p><h2>La historia no se guarda.<br>Se sigue tocando.</h2><p>La Asociación Musical Nuestra Señora del Remedio es el resultado del trabajo de muchas personas: profesores, directores, músicos, alumnos, juntas directivas, socios, familias, colaboradores y vecinos que, generación tras generación, han hecho posible que la música continúe sonando en La Matanza.</p></div></div>`, 'page history-page');
 delete templates.curriculum;
 
+function getAssociationYears(date = new Date()) {
+  const foundationYear = 2008;
+  const anniversary = new Date(date.getFullYear(), 4, 11);
+  return date.getFullYear() - foundationYear - (date < anniversary ? 1 : 0);
+}
+
 const GLISSANDOO_EVENTS_URL = 'https://glissandoo.com/sites/am_lamatanza';
 
 function parseGlissandooEvents(html) {
@@ -857,6 +863,103 @@ function render() {
   const key = (location.hash || '#inicio').slice(1);
   const html = templates[key] ? templates[key]() : templates.inicio();
   document.querySelector('main').innerHTML = html;
+  if (window.presidentsCarouselTimer) clearInterval(window.presidentsCarouselTimer);
+  if (key === 'junta-directiva') {
+    document.querySelector('main').insertAdjacentHTML('beforeend', `<section class="presidents-archive"><div class="presidents-archive-head"><div><p class="eyebrow">Memoria de la Asociación</p><h2>Presidentes que nos precedieron</h2></div><p>Cada etapa de la Asociación ha contado con personas comprometidas con la música, la escuela y la vida cultural de La Matanza.</p></div><div class="presidents-archive-intro"><span class="presidents-archive-mark">✦</span><div><h3>Un legado construido entre todos</h3><p>Estamos reuniendo la información de las presidencias anteriores para completar este archivo histórico y reconocer a quienes han dedicado su tiempo al proyecto.</p></div></div><div class="presidents-carousel"><button class="presidents-carousel-button is-prev" type="button" aria-label="Presidencia anterior">←</button><div class="presidents-carousel-viewport"><div class="presidents-archive-grid presidents-carousel-track"><article><span>2020—2024</span><strong>Presidencia anterior</strong><small>Archivo histórico en preparación</small></article><article><span>2016—2020</span><strong>Presidencia anterior</strong><small>Archivo histórico en preparación</small></article><article><span>2012—2016</span><strong>Presidencia anterior</strong><small>Archivo histórico en preparación</small></article><article><span>2008—2012</span><strong>Presidencia anterior</strong><small>Archivo histórico en preparación</small></article><article><span>2004—2008</span><strong>Presidencia anterior</strong><small>Archivo histórico en preparación</small></article><article><span>2000—2004</span><strong>Presidencia anterior</strong><small>Archivo histórico en preparación</small></article></div></div><button class="presidents-carousel-button is-next" type="button" aria-label="Siguiente presidencia">→</button></div></section>`);
+    const carousel = document.querySelector('.presidents-carousel');
+    carousel?.querySelectorAll('.presidents-carousel-button').forEach(button => button.remove());
+    const track = carousel?.querySelector('.presidents-carousel-track');
+    const viewport = carousel?.querySelector('.presidents-carousel-viewport');
+    const cards = track ? [...track.children] : [];
+    const presidentImages = ['assets/presidente-2016-2021.png', img.people, img.conductor, img.classroom, img.music, img.concert];
+    const presidentData = [
+      ['2016—2021', 'Ricardo Pina Bernabeu', 'A la música le das tiempo, esfuerzo y corazón; y, a cambio, siempre te devuelve mucho más de lo que le entregas. Las asociaciones musicales son de los pocos espacios donde conviven y cooperan distintas generaciones en una misma banda, compartiendo espacio y momentos.'],
+      ['2020—2024', 'Nombre y apellidos', 'Descripción breve de su etapa al frente de la Asociación.'],
+      ['2012—2016', 'Nombre y apellidos', 'Descripción breve de su etapa al frente de la Asociación.'],
+      ['2008—2012', 'Nombre y apellidos', 'Descripción breve de su etapa al frente de la Asociación.'],
+      ['2004—2008', 'Nombre y apellidos', 'Descripción breve de su etapa al frente de la Asociación.'],
+      ['2000—2004', 'Nombre y apellidos', 'Descripción breve de su etapa al frente de la Asociación.']
+    ];
+    cards.forEach((card, index) => {
+      const [period, name, description] = presidentData[index];
+      card.innerHTML = `<span class="president-period">${period}</span><strong class="president-name">${name}</strong><p class="president-description">${description}</p>`;
+      card.classList.add('president-card-quote');
+      const avatar = document.createElement('div');
+      avatar.className = 'president-avatar';
+      avatar.style.backgroundImage = `url('${presidentImages[index]}')`;
+      avatar.setAttribute('aria-hidden', 'true');
+      card.prepend(avatar);
+    });
+    let carouselIndex = 0;
+    let dragStartX = null;
+    let dragDistance = 0;
+    const visibleCards = () => window.matchMedia('(max-width: 640px)').matches ? 1 : window.matchMedia('(max-width: 900px)').matches ? 2 : 3;
+    const moveCarousel = (step = 1) => {
+      const visible = visibleCards();
+      const maxIndex = Math.max(0, cards.length - visible);
+      carouselIndex = (carouselIndex + step + maxIndex + 1) % (maxIndex + 1);
+      track.style.transform = `translateX(calc(${carouselIndex} * -${100 / visible}% - ${carouselIndex * 8}px))`;
+    };
+    viewport?.addEventListener('pointerdown', event => {
+      dragStartX = event.clientX;
+      dragDistance = 0;
+      track.style.transition = 'none';
+      viewport.setPointerCapture?.(event.pointerId);
+    });
+    viewport?.addEventListener('pointermove', event => {
+      if (dragStartX === null) return;
+      dragDistance = event.clientX - dragStartX;
+      track.style.transform = `translateX(calc(${carouselIndex} * -${100 / visibleCards()}% - ${carouselIndex * 8}px + ${dragDistance}px))`;
+    });
+    const finishDrag = () => {
+      if (dragStartX === null) return;
+      track.style.transition = '';
+      if (Math.abs(dragDistance) > 45) moveCarousel(dragDistance < 0 ? 1 : -1);
+      else moveCarousel(0);
+      dragStartX = null;
+      dragDistance = 0;
+    };
+    viewport?.addEventListener('pointerup', finishDrag);
+    viewport?.addEventListener('pointercancel', finishDrag);
+    window.presidentsCarouselTimer = setInterval(() => moveCarousel(1), 15000);
+  }
+  if (key === 'director') {
+    document.querySelector('.director-archive')?.remove();
+    document.querySelector('main').insertAdjacentHTML('beforeend', `<section class="presidents-archive directors-archive"><div class="presidents-archive-head"><div><p class="eyebrow">Archivo de la banda</p><h2>Directores que nos precedieron</h2></div><p>Personas que han guiado musicalmente a la agrupación y han dejado su huella en cada etapa de nuestra historia.</p></div><div class="presidents-carousel"><div class="presidents-carousel-viewport"><div class="presidents-archive-grid presidents-carousel-track"><article><span>2018—2025</span><strong>Clara Molina</strong><small>Dirección musical</small></article><article><span>2010—2018</span><strong>Javier Belda</strong><small>Dirección musical</small></article><article><span>1998—2010</span><strong>María Torres</strong><small>Dirección musical</small></article><article><span>1982—1998</span><strong>Antonio Serra</strong><small>Dirección musical</small></article><article><span>1970—1982</span><strong>Nombre por confirmar</strong><small>Dirección musical</small></article><article><span>Anterior</span><strong>Nombre por confirmar</strong><small>Dirección musical</small></article></div></div></div></section>`);
+    const carousel = document.querySelector('.directors-archive .presidents-carousel');
+    const track = carousel?.querySelector('.presidents-carousel-track');
+    const viewport = carousel?.querySelector('.presidents-carousel-viewport');
+    const cards = track ? [...track.children] : [];
+    const directorImages = [img.conductor, img.people, img.classroom, img.music, img.concert, img.people];
+    const directorDescriptions = ['Dirección musical y acompañamiento de la agrupación.', 'Una etapa de crecimiento artístico y trabajo colectivo.', 'Repertorio, ensayos y conciertos al servicio de la banda.', 'Una mirada musical ligada a la comunidad.', 'Trayectoria y compromiso con la formación musical.', 'Información histórica pendiente de completar.'];
+    cards.forEach((card, index) => {
+      const avatar = document.createElement('div');
+      avatar.className = 'president-avatar';
+      avatar.style.backgroundImage = `url('${directorImages[index]}')`;
+      avatar.setAttribute('aria-hidden', 'true');
+      card.classList.add('president-card-quote');
+      card.innerHTML = `${card.innerHTML.replace(/<small>[\s\S]*?<\/small>/, `<p class="president-description">${directorDescriptions[index]}</p>`)}`;
+      card.prepend(avatar);
+    });
+    let carouselIndex = 0;
+    let dragStartX = null;
+    let dragDistance = 0;
+    const visibleCards = () => window.matchMedia('(max-width: 640px)').matches ? 1 : window.matchMedia('(max-width: 900px)').matches ? 2 : 3;
+    const moveCarousel = (step = 1) => {
+      const visible = visibleCards();
+      const maxIndex = Math.max(0, cards.length - visible);
+      carouselIndex = (carouselIndex + step + maxIndex + 1) % (maxIndex + 1);
+      track.style.transform = `translateX(calc(${carouselIndex} * -${100 / visible}% - ${carouselIndex * 8}px))`;
+    };
+    viewport?.addEventListener('pointerdown', event => { dragStartX = event.clientX; dragDistance = 0; track.style.transition = 'none'; viewport.setPointerCapture?.(event.pointerId); });
+    viewport?.addEventListener('pointermove', event => { if (dragStartX === null) return; dragDistance = event.clientX - dragStartX; track.style.transform = `translateX(calc(${carouselIndex} * -${100 / visibleCards()}% - ${carouselIndex * 8}px + ${dragDistance}px))`; });
+    const finishDrag = () => { if (dragStartX === null) return; track.style.transition = ''; if (Math.abs(dragDistance) > 45) moveCarousel(dragDistance < 0 ? 1 : -1); else moveCarousel(0); dragStartX = null; dragDistance = 0; };
+    viewport?.addEventListener('pointerup', finishDrag);
+    viewport?.addEventListener('pointercancel', finishDrag);
+    window.presidentsCarouselTimer = setInterval(() => moveCarousel(1), 15000);
+  }
+  const associationYears = document.querySelector('.history-stamp strong');
+  if (associationYears && key === 'nuestra-historia') associationYears.textContent = getAssociationYears();
   document.querySelectorAll('a[href="#curriculum"]').forEach(link => { link.href = '#nuestra-historia'; });
   document.querySelectorAll('h3').forEach(heading => {
     if (heading.textContent === 'Currículum') heading.textContent = 'Nuestra Historia';
