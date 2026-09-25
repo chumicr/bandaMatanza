@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "check": "node --check app.js && node --check src/data/site.js && node --check src/data/people.js && node --check src/utils/router.js && node --check src/components/navigation.js && node --check src/components/animations.js && node --check src/pages/helpers.js",
+    "check": "node --check app.js && node --check src/data/site.js && node --check src/data/people.js && node --check src/data/education.js && node --check src/utils/router.js && node --check src/components/navigation.js && node --check src/components/animations.js && node --check src/pages/helpers.js",
     "dev": "node scripts/serve.mjs"
   }
 }
