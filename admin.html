@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Acceso privado · Asociación Musical La Matanza</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="admin.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="header-inner">
+        <a class="brand" href="/" aria-label="Asociación Musical La Matanza, inicio">
+          <img class="brand-logo" src="assets/logo-header.png" alt="La Matanza" />
+          <span><em>Asociación Musical</em><strong>La Matanza</strong></span>
+        </a>
+      </div>
+    </header>
+    <main id="contenido">
+      <section class="page private-login-page">
+        <div class="paper private-login-card">
+          <p class="eyebrow">Área reservada</p>
+          <h1>Acceso privado</h1>
+          <p class="private-login-lead">Introduce la contraseña para continuar.</p>
+          <form class="private-login-form" data-login-form>
+            <label>Contraseña<input type="password" name="password" autocomplete="current-password" required autofocus /></label>
+            <button class="btn btn-primary" type="submit">Entrar</button>
+            <p class="private-login-error" data-login-error hidden></p>
+          </form>
+          <a class="text-link" href="/">Volver a la web</a>
+        </div>
+      </section>
+    </main>
+    <footer class="site-footer">
+      <div class="footer-bottom private-footer-bottom"><span>© <span data-current-year>2026</span> Asociación Musical “Ntra. Sra. del Remedio” La Matanza</span><span><a href="/">Volver a la web</a></span></div>
+    </footer>
+    <script type="module" src="admin.js"></script>
+  </body>
+</html>

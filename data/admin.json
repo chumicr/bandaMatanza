@@ -1,0 +1,41 @@
+{
+  "settings": {
+    "enrollmentOpen": true,
+    "enrollmentCourse": "2026 / 2027",
+    "enrollmentDeadline": "Hasta el 31 de octubre",
+    "contactEmail": "bandalamatanza@gmail.com"
+  },
+  "content": {
+    "inicio:1": "La música<br><em>nos reúne.</em>",
+    "inicio:5": "F"
+  },
+  "events": [
+    {
+      "id": "event-1",
+      "date": "2026-09-25",
+      "time": "20:30",
+      "title": "Concierto Intercambio La Murada",
+      "location": "CEIP Maestro Ismael Garc�a",
+      "published": true
+    },
+    {
+      "id": "event-2",
+      "date": "2026-09-26",
+      "time": "17:30",
+      "title": "Concierto Intercambio La Matanza",
+      "location": "Parroquia de La Matanza",
+      "published": true
+    },
+    {
+      "id": "event-3",
+      "date": "2026-10-07",
+      "time": "19:00",
+      "title": "Pasacalles Fiestas La Matanza",
+      "location": "Parroquia de La Matanza",
+      "published": true
+    }
+  ],
+  "gallery": [],
+  "messages": [],
+  "applications": []
+}

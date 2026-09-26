@@ -16,6 +16,9 @@ const CURRENT_DIRECTOR = SITE_CURRENT_DIRECTOR;
 const CURRENT_BOARD = SITE_CURRENT_BOARD;
 const VERIFIED_PRESIDENTS = SITE_VERIFIED_PRESIDENTS;
 const GLISSANDOO_EVENTS_URL = SITE.glissandooEventsUrl;
+let adminMode = false;
+let adminData = null;
+let adminContentOverrides = {};
 
 function setupHomeAnnouncements() {
   const section = document.querySelector('.home-band');
@@ -278,7 +281,155 @@ const fallbackCalendarEvents = [
   { datetime: '2026-10-11T17:00:00+00:00', displayName: 'Pasacalles y Procesión La Matanza', locality: 'Parroquia de La Matanza' }
 ];
 let calendarCursor = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
-let calendarEvents = fallbackCalendarEvents;
+let calendarEvents = [];
+let managedPublicData = null;
+
+function formatManagedDate(date) {
+  const parsed = new Date(`${date}T12:00:00`);
+  return {
+    day: new Intl.DateTimeFormat('es-ES', { day: '2-digit' }).format(parsed),
+    month: new Intl.DateTimeFormat('es-ES', { month: 'short' }).format(parsed).replace('.', '').toUpperCase()
+  };
+}
+
+function escapeManagedText(value) {
+  return String(value ?? '').replace(/[&<>"']/g, character => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[character]));
+}
+
+function renderManagedHomeEvents(events) {
+  const list = document.querySelector('#agenda .event-list');
+  if (!list || !events?.length) return;
+  list.innerHTML = events.slice(0, 3).map(event => {
+    const date = formatManagedDate(event.date);
+    return `<article class="event"><div class="event-date"><strong>${date.day}</strong><small>${date.month}</small></div><div><h3>${escapeManagedText(event.title)}</h3><p>${escapeManagedText(event.location || '')}${event.time ? ` · ${escapeManagedText(event.time)}` : ''}</p></div></article>`;
+  }).join('');
+}
+
+async function syncManagedPublicData() {
+  try {
+    const response = await fetch(`/api/public/data?_=${Date.now()}`, { cache: 'no-store' });
+    if (!response.ok) return;
+    managedPublicData = await response.json();
+    adminContentOverrides = managedPublicData.content || adminContentOverrides;
+    const currentRoute = resolveRoute().key;
+    applyStoredContent(currentRoute);
+    if (adminMode) decorateAdminContent(currentRoute);
+  } catch (error) {
+    console.info('No se pudo leer la configuración pública gestionada.', error);
+  }
+}
+
+function getEditableContentTargets(root = document.querySelector('main')) {
+  if (!root) return [];
+  return [...root.querySelectorAll('h1,h2,h3,h4,p,small,strong')].filter(target => {
+    if (target.closest('form, .event, .calendar-days, .admin-mode-bar, .admin-agenda-controls, .admin-event-editor')) return false;
+    if (target.parentElement?.closest('p') || target.parentElement?.closest('h1,h2,h3,h4')) return false;
+    if (target.classList.contains('eyebrow') && target.textContent.trim() === '') return false;
+    return target.textContent.trim().length > 0;
+  });
+}
+
+function contentKey(route, index) {
+  return `${route}:${index}`;
+}
+
+function applyStoredContent(route) {
+  getEditableContentTargets().forEach((target, index) => {
+    const value = adminContentOverrides[contentKey(route, index)];
+    if (typeof value === 'string') target.innerHTML = value;
+  });
+}
+
+async function saveAdminContent() {
+  const response = await fetch('/api/admin/data', {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ content: adminContentOverrides })
+  });
+  if (!response.ok) throw new Error('No se pudo guardar el contenido.');
+}
+
+function createInlineEditor(target, route, index) {
+  target.classList.add('admin-editable');
+  target.dataset.adminContentKey = contentKey(route, index);
+  const editButton = document.createElement('button');
+  editButton.type = 'button';
+  editButton.className = 'admin-inline-edit';
+  editButton.textContent = 'Editar';
+  editButton.setAttribute('aria-label', 'Editar este contenido');
+  target.insertAdjacentElement('afterend', editButton);
+  editButton.addEventListener('click', () => {
+    if (target.nextElementSibling?.classList.contains('admin-inline-actions')) return;
+    const original = target.innerHTML;
+    target.contentEditable = 'true';
+    target.classList.add('admin-editing');
+    target.focus();
+    editButton.hidden = true;
+    const actions = document.createElement('span');
+    actions.className = 'admin-inline-actions';
+    actions.innerHTML = '<button type="button" class="admin-inline-save">Guardar</button><button type="button" class="admin-inline-cancel">Cancelar</button>';
+    editButton.insertAdjacentElement('afterend', actions);
+    actions.querySelector('.admin-inline-save').addEventListener('click', async () => {
+      try {
+        adminContentOverrides[target.dataset.adminContentKey] = target.innerHTML;
+        await saveAdminContent();
+        finish();
+        showAdminStatus('Contenido guardado');
+      } catch (error) { showAdminStatus(error.message); }
+    });
+    actions.querySelector('.admin-inline-cancel').addEventListener('click', () => {
+      target.innerHTML = original;
+      finish();
+    });
+    const finish = () => {
+      target.contentEditable = 'false';
+      target.classList.remove('admin-editing');
+      actions.remove();
+      editButton.hidden = false;
+    };
+  });
+}
+
+function showAdminStatus(message) {
+  const status = document.querySelector('.admin-mode-bar small');
+  if (!status) return;
+  status.textContent = message;
+  window.clearTimeout(window.adminStatusTimer);
+  window.adminStatusTimer = window.setTimeout(() => { status.textContent = 'Modo edición'; }, 2400);
+}
+
+function decorateAdminContent(route) {
+  if (!adminMode) return;
+  getEditableContentTargets().forEach((target, index) => {
+    if (target.dataset.adminContentKey) return;
+    createInlineEditor(target, route, index);
+  });
+}
+
+function addAdminModeBar() {
+  if (document.querySelector('.admin-mode-bar')) return;
+  const bar = document.createElement('div');
+  bar.className = 'admin-mode-bar';
+  bar.innerHTML = '<span><small>Modo edición</small></span><button type="button" data-admin-logout>Salir</button>';
+  document.body.append(bar);
+  bar.querySelector('[data-admin-logout]').addEventListener('click', async () => {
+    await fetch('/api/admin/logout', { method: 'POST' });
+    window.location.href = '/';
+  });
+}
+
+async function setupAdminMode() {
+  if (new URLSearchParams(location.search).get('admin') !== '1') return;
+  try {
+    const session = await fetch('/api/admin/session').then(response => response.json());
+    if (!session.authenticated) { window.location.href = '/admin.html'; return; }
+    adminData = await fetch('/api/admin/data').then(response => response.json());
+    adminContentOverrides = adminData.content || {};
+    adminMode = true;
+    addAdminModeBar();
+    render();
+  } catch (error) { console.error('No se pudo activar el modo edición.', error); window.location.href = '/admin.html'; }
+}
 
 const holidayCalendar = {
   2026: [
@@ -441,7 +592,7 @@ function setupEnrollmentForm() {
       label.appendChild(error);
     };
     const clearFieldError = field => field.closest('label')?.querySelector('.field-error')?.remove();
-    form.addEventListener('submit', event => {
+    form.addEventListener('submit', async event => {
       form.classList.add('was-validated');
       form.querySelectorAll('input[name="dni-alumno"], input[name="dni-tutor"], input[name="dni"]').forEach(validateDni);
       const invalid = [...form.elements].filter(element => element.willValidate && !element.checkValidity());
@@ -452,12 +603,20 @@ function setupEnrollmentForm() {
         return;
       }
       event.preventDefault();
-      const values = [...form.querySelectorAll('input, select, textarea')]
-        .filter(field => field.type !== 'checkbox' && field.value.trim())
-        .map(field => `${field.name || field.closest('label')?.firstChild?.textContent?.trim() || 'Dato'}: ${field.value.trim()}`)
-        .join('\n');
-      const subject = form.classList.contains('member-form') ? 'Solicitud de alta como socio/a' : 'Consulta de matrícula';
-      window.location.href = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(values)}`;
+      const payload = Object.fromEntries([...form.querySelectorAll('input, select, textarea')]
+        .filter(field => field.type !== 'checkbox' && field.name && field.value.trim())
+        .map(field => [field.name, field.value.trim()]));
+      payload.type = form.classList.contains('member-form') ? 'socio' : 'matricula';
+      const button = form.querySelector('button[type="submit"]');
+      if (button) { button.disabled = true; button.textContent = 'Enviando…'; }
+      try {
+        const response = await fetch('/api/public/applications', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+        if (!response.ok) throw new Error('No se pudo enviar la solicitud.');
+        form.outerHTML = '<div class="notice"><strong>Solicitud recibida.</strong><br>Gracias. La asociación revisará tus datos y contactará contigo.</div>';
+      } catch (error) {
+        if (button) { button.disabled = false; button.textContent = 'Reintentar envío'; }
+        window.alert(error.message);
+      }
     });
     form.addEventListener('input', event => {
       if (event.target.name === 'dni-alumno' || event.target.name === 'dni-tutor' || event.target.name === 'dni') validateDni(event.target);
@@ -532,14 +691,21 @@ function setupDonationForm() {
 function setupContactForm() {
   const form = document.querySelector('.contact-form-card .form');
   if (!form) return;
-  form.addEventListener('submit', (event) => {
+  form.addEventListener('submit', async (event) => {
     event.preventDefault();
     if (!form.reportValidity()) return;
     const fields = [...form.querySelectorAll('input, textarea')];
     const [name, email, message] = fields;
-    const subject = `Consulta web de ${name?.value.trim() || 'una persona visitante'}`;
-    const body = `Nombre: ${name?.value.trim() || ''}\nEmail: ${email?.value.trim() || ''}\n\n${message?.value.trim() || ''}`;
-    window.location.href = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    const button = form.querySelector('button[type="submit"]');
+    if (button) { button.disabled = true; button.textContent = 'Enviando…'; }
+    try {
+      const response = await fetch('/api/public/messages', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name: name?.value.trim(), email: email?.value.trim(), message: message?.value.trim() }) });
+      if (!response.ok) throw new Error('No se pudo enviar el mensaje.');
+      form.outerHTML = '<div class="notice"><strong>Mensaje recibido.</strong><br>Te responderemos lo antes posible.</div>';
+    } catch (error) {
+      if (button) { button.disabled = false; button.textContent = 'Enviar mensaje'; }
+      window.alert(error.message);
+    }
   });
 }
 
@@ -569,9 +735,18 @@ function applyRemoteEvents(events) {
   calendarEvents = events;
   renderCalendarMonth(calendarCursor, events);
   const formatted = events.map(formatRemoteEvent);
-  document.querySelectorAll('.event-list .event').forEach((card, index) => {
+  document.querySelectorAll('.event-list').forEach(list => {
+    list.querySelector('.calendar-empty')?.remove();
+    const visibleEvents = formatted.slice(0, 3);
+    while (list.querySelectorAll('.event').length < visibleEvents.length) {
+      const event = visibleEvents[list.querySelectorAll('.event').length];
+      list.insertAdjacentHTML('beforeend', `<article class="event"><div class="event-date"><strong></strong><small></small></div><div><h3></h3><p></p></div></article>`);
+    }
+  });
+  const eventCards = [...document.querySelectorAll('.event-list .event')];
+  eventCards.forEach((card, index) => {
     const event = formatted[index];
-    if (!event) return;
+    if (!event) { card.remove(); return; }
     const date = card.querySelector('.event-date');
     const titleEl = card.querySelector('h3');
     const location = card.querySelector('p');
@@ -579,9 +754,12 @@ function applyRemoteEvents(events) {
     if (titleEl) titleEl.textContent = event.title;
     if (location) location.textContent = `${event.location} · ${event.time}`;
   });
+  document.querySelectorAll('.event-list').forEach(list => {
+    if (!formatted.length && !list.querySelector('.calendar-empty')) list.insertAdjacentHTML('beforeend', '<p class="calendar-empty">No hay próximas actuaciones publicadas.</p>');
+  });
   document.querySelectorAll('.schedule-list li').forEach((item, index) => {
     const event = formatted[index];
-    if (!event) return;
+    if (!event) { item.remove(); return; }
     const date = item.querySelector('time');
     const titleEl = item.querySelector('b');
     const location = item.querySelector('span');
@@ -596,17 +774,24 @@ function applyRemoteEvents(events) {
     const small = meta.querySelector('small');
     if (strong) strong.textContent = `${next.day} ${next.month.toLowerCase()}`;
     if (small) small.textContent = next.title;
+  } else if (meta) {
+    const strong = meta.querySelector('b');
+    const small = meta.querySelector('small');
+    if (strong) strong.textContent = 'Sin fecha';
+    if (small) small.textContent = 'Sin próximas actuaciones';
   }
 }
 
 async function syncGlissandooEvents() {
   try {
-    const response = await fetch(`${GLISSANDOO_EVENTS_URL}?_=${Date.now()}`, { cache: 'no-store' });
+    const response = await fetch(`/api/public/glissandoo-events?_=${Date.now()}`, { cache: 'no-store' });
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
-    const events = parseGlissandooEvents(await response.text());
-    if (events.length) applyRemoteEvents(events);
+    const payload = await response.json();
+    const events = payload.events || [];
+    applyRemoteEvents(events);
   } catch (error) {
-    console.info('Eventos en modo respaldo local (Glissandoo no permite lectura directa).');
+    applyRemoteEvents([]);
+    console.info('No se pudieron leer los eventos de Glissandoo.', error);
   }
 }
 
@@ -907,7 +1092,7 @@ function render() {
   setupRevealAnimations(document.querySelector('main'));
   setupGalleryLightbox(document.querySelector('main'));
   setupCalendarControls();
-  applyRemoteEvents(fallbackCalendarEvents);
+  applyRemoteEvents([]);
   setupEnrollmentForm();
   setupGoogleEnrollmentForm();
   setupContactForm();
@@ -919,6 +1104,10 @@ function render() {
   positionFooterLegalLinks();
   syncDirectorName();
   syncDonationLink();
+  applyStoredContent(key);
+  if (adminMode) {
+    decorateAdminContent(key);
+  }
   if (key === 'donaciones') {
     document.querySelector('.donation-page .page-title .lead')?.remove();
     document.querySelector('.donation-intro h2')?.replaceChildren('Tu ayuda mantiene viva la música.');
@@ -937,3 +1126,5 @@ function render() {
 
 window.addEventListener('hashchange', render); render();
 syncGlissandooEvents();
+syncManagedPublicData();
+setupAdminMode();
