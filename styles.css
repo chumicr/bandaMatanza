@@ -318,7 +318,7 @@ html,body{width:100%;max-width:100%;overflow-x:hidden;overflow-x:clip}.site-head
 .board-period-modal{position:fixed;inset:0;z-index:60;display:grid;place-items:center;padding:24px;background:rgba(18,34,22,.72);backdrop-filter:blur(6px)}
 .board-period-dialog{position:relative;width:min(100%,620px);max-height:min(720px,90vh);overflow:auto;background:#fff;border-radius:28px;padding:clamp(28px,5vw,52px);box-shadow:0 28px 80px rgba(0,0,0,.25)}
 .board-period-close{position:absolute;top:16px;right:18px;width:38px;height:38px;border:0;border-radius:50%;background:#f1f7ee;color:#315d2a;font-size:28px;line-height:1;cursor:pointer}
-.board-period-dialog h2{font:600 clamp(2rem,4vw,3.4rem)/1.05 "Playfair Display",serif;margin:0 0 16px;color:#172019}
+.board-period-dialog h2{font:600 clamp(1.55rem,3vw,2.4rem)/1.08 "Playfair Display",serif;margin:0 0 16px;color:#172019}
 .board-period-note{max-width:490px;color:#6e7a6c;font-size:14px;line-height:1.6;margin:0 0 25px}
 .board-period-dialog ul{display:grid;gap:10px;list-style:none;margin:0;padding:0}
 .board-period-dialog li{display:flex;justify-content:space-between;gap:18px;align-items:center;border:1px solid #e0eae0;border-radius:15px;padding:15px 17px}
@@ -398,6 +398,10 @@ button[hidden],.presidents-carousel-button[hidden]{display:none!important}
 .archive-empty h2{font:500 clamp(2rem,4vw,3.5rem)/1.05 "Lora","Playfair Display",serif;color:#315d2a;margin:0 0 12px}
 .archive-empty p:not(.eyebrow){max-width:620px;color:#6e7a6c;margin:0 0 16px}
 .google-form-embed{width:100%;max-width:920px;margin:0 auto;padding:0 0 20px;text-align:center}
+
+/* Las imágenes anónimas conservan una proporción cuadrada en todas las pantallas. */
+.presidents-archive-grid .president-avatar{width:100%;height:auto;aspect-ratio:1 / 1;min-height:0;flex:0 0 auto;background-size:cover;background-position:center top}
+.board-member-avatar{width:100%;height:auto;aspect-ratio:1 / 1;min-height:0;flex:0 0 auto;align-self:start;background-size:cover;background-position:center top}
 .google-form-embed iframe{display:block;width:100%;min-height:1100px;border:0;border-radius:18px;background:#fff}
 .google-form-embed p{margin:14px 0 0;color:#6e7a6c;font-size:13px}
 .legal-content .legal-representative,.legal-content .legal-registration{color:#586657}

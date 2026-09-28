@@ -937,7 +937,6 @@ function render() {
   }
   if (key === 'junta-directiva') {
     document.querySelector('.board-term')?.remove();
-    document.querySelector('.board-history')?.remove();
     const boardLead = document.querySelector('.board-lead-copy');
     if (boardLead) {
       boardLead.querySelector('.pill').textContent = 'Presidente';
@@ -950,7 +949,16 @@ function render() {
       boardGrid.innerHTML = CURRENT_BOARD.map(([role, name]) => `<article class="board-member"><div class="board-member-avatar" role="img" aria-label="Imagen no disponible para ${name}" style="background-image:url('assets/presidente-unknown.png')"></div><div><span>${role}</span><h3>${name}</h3></div></article>`).join('');
     }
     document.querySelector('main').insertAdjacentHTML('beforeend', `<section class="presidents-archive"><div class="presidents-archive-head"><div><p class="eyebrow">Memoria de la Asociación</p><h2>Presidentes que nos precedieron</h2></div><p>Cada etapa de la Asociación ha contado con personas comprometidas con la música, la escuela y la vida cultural de La Matanza.</p></div><div class="presidents-archive-intro"><span class="presidents-archive-mark">✦</span><div><h3>Un legado construido entre todos</h3><p>Estamos reuniendo la información de las presidencias anteriores para completar este archivo histórico y reconocer a quienes han dedicado su tiempo al proyecto.</p></div></div><div class="presidents-carousel"><button class="presidents-carousel-button is-prev" type="button" aria-label="Presidencia anterior">‹</button><div class="presidents-carousel-viewport"><div class="presidents-archive-grid presidents-carousel-track"><article><span>2020—2024</span><strong>Presidencia anterior</strong><small>Archivo histórico en preparación</small></article><article><span>2016—2020</span><strong>Presidencia anterior</strong><small>Archivo histórico en preparación</small></article><article><span>2012—2016</span><strong>Presidencia anterior</strong><small>Archivo histórico en preparación</small></article><article><span>2008—2012</span><strong>Presidencia anterior</strong><small>Archivo histórico en preparación</small></article><article><span>2004—2008</span><strong>Presidencia anterior</strong><small>Archivo histórico en preparación</small></article><article><span>2000—2004</span><strong>Presidencia anterior</strong><small>Archivo histórico en preparación</small></article></div></div><button class="presidents-carousel-button is-next" type="button" aria-label="Siguiente presidencia">›</button></div></section>`);
-    const boardPeriodRoles = ['Presidencia', 'Secretaría', 'Tesorería', 'Vocalías'];
+    const boardHistory = document.querySelector('.board-history');
+    if (boardHistory) {
+      const years = boardHistory.querySelector('.board-years');
+      if (years) years.innerHTML = [['2016—2021', 'Composición PTE'], ['2012—2016', 'Ver composición'], ['2008—2012', 'Ver composición']].map(([period, label]) => `<button type="button"><span>${period}</span><b>${label}</b><i>↗</i></button>`).join('');
+    }
+    const boardPeriodCompositions = {
+      '2016—2021': [['Presidencia', 'Ricardo Pina Bernabeu'], ['Secretaría', 'PTE'], ['Tesorería', 'PTE'], ['Vocalías', 'PTE']],
+      '2012—2016': [['Presidencia', 'Pepe Beltrán Riquelme'], ['Secretaría', 'María Amparo Abad Sarmiento'], ['Tesorería', 'María Teresa Escudero · segundo apellido PTE'], ['Vocalía', 'María del Mar Abad Sarmiento']],
+      '2008—2012': [['Presidencia', 'Pepe Beltrán Riquelme'], ['Secretaría', 'María Amparo Abad Sarmiento'], ['Tesorería', 'María Teresa Escudero · segundo apellido PTE'], ['Vocalía', 'María del Mar Abad Sarmiento']]
+    };
     document.querySelectorAll('.board-years button').forEach((button) => {
       button.addEventListener('click', () => {
         const period = button.querySelector('span')?.textContent.trim() || 'Periodo anterior';
@@ -958,7 +966,8 @@ function render() {
         modal.className = 'board-period-modal';
         modal.setAttribute('role', 'dialog');
         modal.setAttribute('aria-modal', 'true');
-        modal.innerHTML = `<div class="board-period-dialog"><button class="board-period-close" type="button" aria-label="Cerrar ventana">×</button><p class="eyebrow">Archivo histórico</p><h2>Composición ${period}</h2><p class="board-period-note">Cargos correspondientes a este periodo. La información de las personas se incorporará al completar el archivo histórico.</p><ul>${boardPeriodRoles.map(role => `<li><strong>${role}</strong><span>Información pendiente de completar</span></li>`).join('')}</ul></div>`;
+        const composition = boardPeriodCompositions[period] || [['Presidencia', 'PTE'], ['Secretaría', 'PTE'], ['Tesorería', 'PTE'], ['Vocalías', 'PTE']];
+        modal.innerHTML = `<div class="board-period-dialog"><button class="board-period-close" type="button" aria-label="Cerrar ventana">×</button><p class="eyebrow">Archivo histórico</p><h2>Composición ${period}</h2><p class="board-period-note">La información pendiente de confirmar aparece marcada como PTE.</p><ul>${composition.map(([role, name]) => `<li><strong>${role}</strong><span>${name}</span></li>`).join('')}</ul></div>`;
         let closeOnEscape;
         const closeModal = () => { modal.remove(); document.body.classList.remove('modal-open'); if (closeOnEscape) document.removeEventListener('keydown', closeOnEscape); };
         modal.addEventListener('click', (event) => { if (event.target === modal) closeModal(); });
@@ -984,7 +993,7 @@ function render() {
     }
     cards.forEach((card, index) => {
       const [period, name, description] = presidentData[index];
-      card.innerHTML = `<span class="president-period">${period}</span><strong class="president-name">${name}</strong><p class="president-description">${description}</p>`;
+      card.innerHTML = `<span class="president-period">${period}</span><strong class="president-name">${name}</strong>${name === 'Ricardo Pina Bernabeu' ? `<p class="president-description">${description}</p>` : ''}`;
       card.classList.add('president-card-quote');
       const avatar = document.createElement('div');
       avatar.className = 'president-avatar';
@@ -1037,41 +1046,56 @@ function render() {
   if (key === 'director') {
     document.querySelector('.director-archive')?.remove();
     document.querySelector('main').insertAdjacentHTML('beforeend', `<section class="presidents-archive directors-archive"><div class="presidents-archive-head"><div><p class="eyebrow">Archivo de la banda</p><h2>Directores que nos precedieron</h2></div><p>Personas que han guiado musicalmente a la agrupación y han dejado su huella en cada etapa de nuestra historia.</p></div><div class="presidents-carousel"><div class="presidents-carousel-viewport"><div class="presidents-archive-grid presidents-carousel-track"><article><span>2018—2025</span><strong>Clara Molina</strong><small>Dirección musical</small></article><article><span>2010—2018</span><strong>Javier Belda</strong><small>Dirección musical</small></article><article><span>1998—2010</span><strong>María Torres</strong><small>Dirección musical</small></article><article><span>1982—1998</span><strong>Antonio Serra</strong><small>Dirección musical</small></article><article><span>1970—1982</span><strong>Nombre por confirmar</strong><small>Dirección musical</small></article><article><span>Anterior</span><strong>Nombre por confirmar</strong><small>Dirección musical</small></article></div></div></div></section>`);
+    const directorArchiveData = [
+      ['PTE', 'Charo Fuentes'],
+      ['PTE', 'Ricardo Martínez Ruiz'],
+      ['2008—2016', 'Rafael González García']
+    ];
+    const insertedDirectorTrack = document.querySelector('.directors-archive .presidents-carousel-track');
+    if (insertedDirectorTrack) {
+      insertedDirectorTrack.innerHTML = directorArchiveData.map(([period, name]) => `<article><span>${period}</span><strong>${name}</strong></article>`).join('');
+    }
     const carousel = document.querySelector('.directors-archive .presidents-carousel');
+    carousel?.insertAdjacentHTML('afterbegin', '<button class="presidents-carousel-button is-prev" type="button" aria-label="Director anterior">‹</button>');
+    carousel?.querySelector('.presidents-carousel-viewport')?.insertAdjacentHTML('afterend', '<button class="presidents-carousel-button is-next" type="button" aria-label="Siguiente director">›</button>');
     const track = carousel?.querySelector('.presidents-carousel-track');
     const viewport = carousel?.querySelector('.presidents-carousel-viewport');
     const cards = track ? [...track.children] : [];
-    const directorImages = ['assets/presidente-unknown.png', 'assets/presidente-unknown.png', 'assets/presidente-unknown.png', 'assets/presidente-unknown.png', 'assets/presidente-unknown.png', 'assets/presidente-unknown.png'];
-    const directorDescriptions = ['Dirección musical y acompañamiento de la agrupación.', 'Una etapa de crecimiento artístico y trabajo colectivo.', 'Repertorio, ensayos y conciertos al servicio de la banda.', 'Una mirada musical ligada a la comunidad.', 'Trayectoria y compromiso con la formación musical.', 'Información histórica pendiente de completar.'];
+    const directorImages = ['assets/presidente-unknown.png', 'assets/presidente-unknown.png', 'assets/presidente-unknown.png'];
     cards.forEach((card, index) => {
       const avatar = document.createElement('div');
       avatar.className = 'president-avatar';
       avatar.style.backgroundImage = `url('${directorImages[index]}')`;
       avatar.setAttribute('aria-hidden', 'true');
       card.classList.add('president-card-quote');
-      card.innerHTML = `${card.innerHTML.replace(/<small>[\s\S]*?<\/small>/, `<p class="president-description">${directorDescriptions[index]}</p>`)}`;
+      card.innerHTML = `${card.innerHTML.replace(/<small>[\s\S]*?<\/small>/, '')}`;
       card.prepend(avatar);
     });
     let carouselIndex = 0;
     let dragStartX = null;
     let dragDistance = 0;
     const visibleCards = () => window.matchMedia('(max-width: 640px)').matches ? 1 : window.matchMedia('(max-width: 900px)').matches ? 2 : 3;
+    carousel?.querySelectorAll('.presidents-carousel-button').forEach(button => { button.hidden = cards.length <= visibleCards(); });
+    const dotCount = Math.max(1, cards.length - visibleCards() + 1);
+    carousel?.insertAdjacentHTML('beforeend', `<div class="presidents-carousel-dots">${Array.from({length: dotCount}, (_, index) => `<button type="button" class="presidents-carousel-dot${index === 0 ? ' is-active' : ''}" aria-label="Ver grupo ${index + 1}" aria-pressed="${index === 0}"></button>`).join('')}</div>`);
+    const dots = carousel ? [...carousel.querySelectorAll('.presidents-carousel-dot')] : [];
+    const updateDots = () => dots.forEach((dot, index) => { dot.classList.toggle('is-active', index === carouselIndex); dot.setAttribute('aria-pressed', String(index === carouselIndex)); });
     const moveCarousel = (step = 1) => {
       const visible = visibleCards();
       const maxIndex = Math.max(0, cards.length - visible);
       carouselIndex = (carouselIndex + step + maxIndex + 1) % (maxIndex + 1);
       track.style.transform = `translateX(calc(${carouselIndex} * -${100 / visible}% - ${carouselIndex * 8}px))`;
+      updateDots();
     };
+    carousel?.querySelector('.presidents-carousel-button.is-prev')?.addEventListener('click', () => moveCarousel(-1));
+    carousel?.querySelector('.presidents-carousel-button.is-next')?.addEventListener('click', () => moveCarousel(1));
+    dots.forEach((dot, index) => dot.addEventListener('click', () => { carouselIndex = index - 1; moveCarousel(1); }));
     viewport?.addEventListener('pointerdown', event => { dragStartX = event.clientX; dragDistance = 0; track.style.transition = 'none'; viewport.setPointerCapture?.(event.pointerId); });
     viewport?.addEventListener('pointermove', event => { if (dragStartX === null) return; dragDistance = event.clientX - dragStartX; track.style.transform = `translateX(calc(${carouselIndex} * -${100 / visibleCards()}% - ${carouselIndex * 8}px + ${dragDistance}px))`; });
     const finishDrag = () => { if (dragStartX === null) return; track.style.transition = ''; if (Math.abs(dragDistance) > 45) moveCarousel(dragDistance < 0 ? 1 : -1); else moveCarousel(0); dragStartX = null; dragDistance = 0; };
     viewport?.addEventListener('pointerup', finishDrag);
     viewport?.addEventListener('pointercancel', finishDrag);
     window.presidentsCarouselTimer = setInterval(() => moveCarousel(1), 15000);
-    document.querySelector('.directors-archive')?.remove();
-    clearInterval(window.presidentsCarouselTimer);
-    window.presidentsCarouselTimer = null;
-    document.querySelector('main').insertAdjacentHTML('beforeend', '<section class="archive-empty directors-archive-empty"><p class="eyebrow">Archivo de la banda</p><h2>Directores que nos precedieron</h2><p>Estamos recopilando la información histórica para publicar nombres, periodos y fotografías verificadas.</p><a class="text-link" href="#contacto">Aportar información</a></section>');
   }
   if (key === 'galeria') document.querySelector('.gallery-count')?.remove();
   const associationYears = document.querySelector('.history-stamp strong');
@@ -1092,7 +1116,7 @@ function render() {
   setupRevealAnimations(document.querySelector('main'));
   setupGalleryLightbox(document.querySelector('main'));
   setupCalendarControls();
-  applyRemoteEvents([]);
+  applyRemoteEvents(calendarEvents);
   setupEnrollmentForm();
   setupGoogleEnrollmentForm();
   setupContactForm();
