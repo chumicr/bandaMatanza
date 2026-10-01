@@ -427,3 +427,70 @@ button[hidden],.presidents-carousel-button[hidden]{display:none!important}
 .education-community{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(260px,.9fr);gap:40px;align-items:end;padding:clamp(30px,5vw,58px);border-radius:28px;background:#f1faed;border:1px solid #cfe4c8}.education-community h2{font-size:clamp(2.2rem,4vw,4rem)}.education-community p:not(.eyebrow){max-width:680px;color:#6e7a6c;font-size:15px;line-height:1.7;margin:24px 0 0}.education-actions{display:flex;justify-content:flex-end;gap:10px;flex-wrap:wrap}.education-actions .btn{white-space:nowrap}
 @media(max-width:900px){.education-hero{grid-template-columns:1fr;gap:34px}.education-hero-note{min-height:230px;max-width:580px}.education-intro{gap:36px}.education-pillar-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.education-stage-list{grid-template-columns:1fr}.education-stage{min-height:0}.education-community{grid-template-columns:1fr}.education-actions{justify-content:flex-start}}
 @media(max-width:640px){.education-page{padding-top:56px}.education-hero{margin-bottom:70px}.education-hero h1{font-size:clamp(3.05rem,14vw,4.45rem)}.education-hero>div:first-child>p:last-child{font-size:16px;line-height:1.65;margin-top:23px}.education-hero-note{min-height:220px;padding:25px 22px;border-radius:23px}.education-hero-note strong{font-size:2.45rem}.education-intro{grid-template-columns:1fr;gap:25px;margin-bottom:75px;padding:30px 0}.education-intro h2,.education-section-head h2,.education-community h2{font-size:clamp(2.25rem,11vw,3.3rem)}.education-intro p{font-size:15px}.education-section-head{display:block;margin-bottom:25px}.education-section-head>p{margin-top:15px;max-width:none}.education-pillar-grid{grid-template-columns:1fr;gap:12px}.education-pillar{min-height:0;padding:23px 20px}.education-pillar h3{font-size:23px;margin-top:19px}.education-pillars,.education-route{margin-bottom:75px}.education-stage{grid-template-columns:40px 1fr;gap:13px;padding:23px 19px}.education-stage h3{font-size:23px}.education-community{padding:27px 21px;border-radius:23px}.education-community p:not(.eyebrow){font-size:14px;margin-top:20px}.education-actions{display:grid;grid-template-columns:1fr;margin-top:25px}.education-actions .btn{width:100%}}
+
+/* Capa responsive final: cabecera, tactilidad y ritmos consistentes. */
+@media(max-width:900px){
+  .site-header{padding-top:env(safe-area-inset-top)}
+  .header-inner{min-height:68px;padding-inline:clamp(14px,3vw,24px)}
+  .main-nav{top:calc(68px + env(safe-area-inset-top));max-height:calc(100dvh - 84px - env(safe-area-inset-top));overflow-y:auto;overscroll-behavior:contain}
+  .nav-link,.dropdown a{min-height:44px;align-items:center}
+  .menu-toggle{min-width:44px;width:44px;height:44px;border-radius:50%;cursor:pointer}
+  .menu-toggle:hover,.menu-toggle:focus-visible{background:#edf8e8}
+  .cards,.event-list,.people-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .footer-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .footer-grid>div:first-child{grid-column:1/-1}
+}
+
+@media(max-width:760px){
+  .header-cta{display:none}
+  .header-donation{margin-left:auto}
+  .hero{min-height:min(680px,calc(100svh - 68px));padding-top:clamp(88px,18vh,132px);padding-bottom:64px}
+  .hero-copy{padding:clamp(16px,4vw,24px)}
+  .hero .display{font-size:clamp(2.85rem,13vw,4.6rem)}
+  .schedule-side,.education-pillar-grid{grid-template-columns:1fr}
+}
+
+@media(max-width:560px){
+  .header-inner{gap:7px;padding-inline:12px}
+  .brand{gap:7px;flex:1;min-width:0}
+  .brand-logo{width:36px;height:36px}
+  .brand span{min-width:0}
+  .brand strong{font-size:clamp(15px,4.5vw,18px);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .brand em{font-size:7px;letter-spacing:.1em;white-space:nowrap}
+  .header-donation{min-width:64px;min-height:40px;padding:9px 10px}
+  .menu-toggle{flex:0 0 40px;min-width:40px;width:40px;height:40px}
+  .main-nav{left:10px;right:10px;padding:8px 10px 12px;border-radius:14px}
+  .page{padding:52px 16px 68px}
+  .hero{margin-inline:0;padding-inline:16px;border-radius:0 0 22px 22px}
+  .hero-art{border-radius:0 0 22px 22px}
+  .home-band{margin-inline:10px;padding:28px 18px}
+  .cards,.event-list,.people-grid{grid-template-columns:1fr}
+  .section-head h2{font-size:clamp(2rem,10vw,2.65rem)}
+  .event{grid-template-columns:52px minmax(0,1fr);gap:13px;padding:16px}
+  .event-date{width:52px;height:56px}
+  .gallery-grid-new{grid-template-columns:1fr}
+  .gallery-grid-new .gallery-item:nth-child(n){grid-column:1!important;min-height:220px}
+  .footer-grid{grid-template-columns:1fr;gap:26px}
+  .footer-grid>div:first-child{grid-column:auto}
+  .site-footer{padding:42px 18px calc(24px + env(safe-area-inset-bottom))}
+  .footer-bottom{line-height:1.7}
+  input,select,textarea{font-size:16px!important}
+}
+
+@media(max-width:390px){
+  .brand em{display:none}
+  .brand strong{font-size:15px}
+  .header-donation{min-width:58px;width:auto;padding-inline:8px}
+  .header-donation:before{content:"Donar";font-size:10px}
+  .hero{min-height:600px;padding-top:82px}
+  .hero .display{font-size:clamp(2.7rem,13vw,3.35rem)}
+  .hero .lead{font-size:15px}
+  .calendar-card{padding-inline:12px}
+  .calendar-grid{gap:3px}
+  .calendar-days span{min-height:40px;padding:5px 3px}
+}
+
+@media(hover:none){
+  .btn,.nav-link,.dropdown a,.text-link,.calendar-actions button,.announcement-arrow{min-height:44px}
+  .card:hover,.btn:hover,.calendar-days span:not(.muted-day):hover{transform:none}
+}
