@@ -1,13 +1,28 @@
-.private-login-page{min-height:62vh;display:grid;place-items:center;padding-top:clamp(64px,10vw,120px);padding-bottom:clamp(64px,10vw,120px)}
-.private-login-card{width:min(560px,100%);padding:clamp(28px,6vw,62px)}
-.private-login-card h1{font:600 clamp(3rem,7vw,6.4rem)/.94 "Playfair Display",Georgia,serif;letter-spacing:-.06em;margin:0 0 18px;color:var(--ink)}
-.private-login-lead{color:var(--muted);margin:0 0 28px}
+.private-login-page{min-height:calc(100vh - 165px);display:grid;place-items:center;padding:clamp(58px,9vw,112px) 28px;position:relative;background:linear-gradient(180deg,#f7fbf5 0%,var(--paper) 100%);overflow:hidden}
+.private-login-page:before{content:"";position:absolute;width:340px;height:340px;border:1px solid rgba(108,166,83,.16);border-radius:50%;right:-145px;top:-160px;box-shadow:0 0 0 28px rgba(108,166,83,.04),0 0 0 58px rgba(108,166,83,.025);pointer-events:none}
+.private-login-page:after{content:"";position:absolute;width:250px;height:250px;border-radius:50%;background:rgba(239,107,79,.08);left:-145px;bottom:-150px;pointer-events:none}
+.private-login-card{width:min(510px,100%);padding:clamp(32px,5vw,58px);background:#fff;border:1px solid #dfeedd;border-radius:26px;box-shadow:0 20px 55px rgba(49,93,42,.1);position:relative;z-index:1}
+.private-login-card:before{content:"";display:block;width:38px;height:4px;border-radius:99px;background:var(--accent);margin-bottom:28px}
+.private-login-card h1{font:600 clamp(2.8rem,6vw,5rem)/.96 "Playfair Display",Georgia,serif;letter-spacing:-.055em;margin:0 0 15px;color:#172019}
+.private-login-lead{color:#6e7a6c;margin:0 0 30px;max-width:340px}
 .private-login-form{display:grid;gap:16px;max-width:420px;margin-bottom:24px}
 .private-login-form label{display:grid;gap:7px;font-size:12px;font-weight:700;color:#315d2a}
 .private-login-form input{width:100%;font:inherit;font-weight:400;border:1px solid #d9e8d4;background:#fbfefa;border-radius:12px;padding:13px 14px;margin-top:0;color:var(--ink)}
 .private-login-form input:focus{outline:0;border-color:#8dca6d;box-shadow:0 0 0 4px rgba(167,222,131,.2)}
-.private-login-form .btn{width:max-content}
-.private-login-error{color:#a23e35;font-size:12px;margin:0}
+.private-login-form .btn{width:100%;min-height:48px;cursor:pointer;box-shadow:0 8px 18px rgba(239,107,79,.16)}
+.private-login-form .btn:hover{box-shadow:0 12px 25px rgba(239,107,79,.25)}
+.private-login-form .btn:focus-visible{outline:3px solid rgba(91,75,196,.25);outline-offset:3px}
+.private-login-form .btn:disabled{opacity:.65;cursor:wait;transform:none;box-shadow:none}
+.private-login-error{color:#a23e35;background:#fff4f2;border:1px solid #f2d4cf;border-radius:10px;padding:10px 12px;font-size:12px;margin:0}
+.private-login-error[hidden]{display:none}
+.private-login-card .text-link{display:inline-flex;align-items:center;gap:7px;color:#6e7a6c;font-size:12px;padding:7px 0}.private-login-card .text-link:after{display:none}.private-login-card .text-link:hover{color:#315d2a}
+.private-login-card .eyebrow{color:#4f8740;margin-bottom:14px}
+body:has(.private-login-page) .site-footer{background:#172019}
+body:has(.private-login-page) .private-footer-bottom{justify-content:center;text-align:center}
+body:has(.private-login-page) .private-footer-bottom>span:last-child{display:none}
+body:has(.private-login-page) .private-footer-bottom a{color:#a7de83}
+body:has(.private-login-page) .private-footer-bottom a:hover{color:#fff}
+body:has(.private-login-page) .site-header .brand-logo{display:none}
 .private-footer-bottom{max-width:1184px;margin:0 auto;border-top:0;padding-top:0}
 .admin-mode-bar{position:fixed;z-index:50;left:50%;bottom:20px;transform:translateX(-50%);display:flex;align-items:center;gap:14px;padding:9px 10px 9px 16px;border:1px solid #cfe4c8;border-radius:999px;background:rgba(247,252,245,.96);box-shadow:0 12px 32px rgba(49,93,42,.18);backdrop-filter:blur(12px);color:#315d2a;font-size:12px;font-weight:700}
 .admin-mode-bar span{display:flex;align-items:center;gap:7px}.admin-mode-bar span:before{content:"";width:8px;height:8px;border-radius:50%;background:#78b45d;box-shadow:0 0 0 4px rgba(120,180,93,.2)}

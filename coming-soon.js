@@ -14,6 +14,8 @@
 
   let activeIndex = 0;
   let timer;
+  let pointerStartX = null;
+  let pointerStartY = null;
   const setActive = (index) => {
     activeIndex = (index + slides.length) % slides.length;
     track.style.transform = `translateX(-${activeIndex * 100}%)`;
@@ -47,6 +49,36 @@
   next?.addEventListener('click', () => { setActive(activeIndex + 1); restart(); });
   carousel.addEventListener('mouseenter', () => window.clearInterval(timer));
   carousel.addEventListener('mouseleave', restart);
+  carousel.addEventListener('focusin', () => window.clearInterval(timer));
+  carousel.addEventListener('focusout', (event) => {
+    if (!carousel.contains(event.relatedTarget)) restart();
+  });
+  carousel.addEventListener('pointerdown', (event) => {
+    if (event.pointerType === 'mouse') return;
+    pointerStartX = event.clientX;
+    pointerStartY = event.clientY;
+    window.clearInterval(timer);
+  });
+  carousel.addEventListener('pointerup', (event) => {
+    if (pointerStartX === null || pointerStartY === null) return;
+    const deltaX = event.clientX - pointerStartX;
+    const deltaY = event.clientY - pointerStartY;
+    pointerStartX = null;
+    pointerStartY = null;
+    if (Math.abs(deltaX) > 48 && Math.abs(deltaX) > Math.abs(deltaY)) {
+      setActive(activeIndex + (deltaX < 0 ? 1 : -1));
+    }
+    restart();
+  });
+  carousel.addEventListener('pointercancel', () => {
+    pointerStartX = null;
+    pointerStartY = null;
+    restart();
+  });
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) window.clearInterval(timer);
+    else restart();
+  });
   setActive(0);
   restart();
 })();

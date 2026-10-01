@@ -70,3 +70,107 @@ h1 span{color:var(--leaf);font-style:italic}
 @media(min-width:901px){.construction-visual{min-height:0;aspect-ratio:16/9;border-radius:28px}}
 @media(min-width:1100px){.construction-hero{grid-template-columns:minmax(0,.9fr) minmax(560px,1fr);gap:clamp(44px,5vw,80px)}.construction-visual{align-self:stretch;aspect-ratio:auto}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition-duration:0s!important;animation-duration:0s!important;animation-iteration-count:1!important}}
+
+/* Responsive final: escalado fluido, zonas seguras y carrusel contenido. */
+html,body{width:100%;max-width:100%;overflow-x:hidden;overflow-x:clip}
+img,svg{max-width:100%}
+.construction-page{min-height:100svh;padding-top:max(30px,env(safe-area-inset-top));padding-right:max(28px,env(safe-area-inset-right));padding-bottom:max(30px,env(safe-area-inset-bottom));padding-left:max(28px,env(safe-area-inset-left))}
+.construction-shell,.construction-copy,.construction-visual,.promo-carousel,.promo-slide>*{min-width:0}
+.promo-carousel-window{isolation:isolate;touch-action:pan-y;overscroll-behavior-inline:contain}
+.promo-slide-image img{max-width:100%;object-position:center}
+.promo-carousel-button,.promo-carousel-dots button{touch-action:manipulation}
+
+@media(max-width:1024px){
+  .construction-page{place-items:start center}
+  .construction-shell{min-height:calc(100svh - 48px)}
+  .construction-hero{grid-template-columns:minmax(0,1fr) minmax(320px,.82fr);gap:clamp(34px,6vw,64px);padding:clamp(48px,7vw,72px) 0}
+  h1{font-size:clamp(3.7rem,8.5vw,6.2rem)}
+  .construction-visual{min-height:clamp(380px,52vw,520px)}
+  .promo-slide{grid-template-columns:minmax(0,1.2fr) minmax(280px,.8fr)}
+  .promo-slide-copy{padding:clamp(28px,4vw,42px)}
+}
+
+@media(max-width:760px){
+  .construction-page{padding-top:max(18px,env(safe-area-inset-top));padding-right:max(18px,env(safe-area-inset-right));padding-bottom:max(22px,env(safe-area-inset-bottom));padding-left:max(18px,env(safe-area-inset-left))}
+  .construction-shell{min-height:calc(100svh - 40px)}
+  .construction-header{align-items:center;padding-bottom:18px}
+  .construction-status{display:none}
+  .construction-hero{grid-template-columns:1fr;gap:38px;padding:clamp(42px,10vw,62px) 0 48px}
+  .construction-copy{max-width:650px}
+  .construction-copy:before{width:210px;height:210px;left:-105px;top:-80px}
+  h1{font-size:clamp(3.25rem,13vw,5.75rem);line-height:.94}
+  .construction-lead{max-width:620px;font-size:16px}
+  .construction-visual{width:100%;max-width:650px;min-height:0;aspect-ratio:4/3;justify-self:center;border-radius:28px}
+  .visual-frame{border-radius:22px}
+  .promo-slide{grid-template-columns:1fr}
+  .promo-slide-image{min-height:0;aspect-ratio:16/9;padding:clamp(12px,3vw,22px)}
+  .promo-slide-image img{width:100%;height:100%;max-height:none;object-fit:contain}
+  .promo-slide-copy{padding:30px 24px 34px;border-left:0;border-top:1px solid rgba(49,93,42,.1)}
+  .promo-slide-copy h3{font-size:clamp(2.2rem,7vw,3.15rem)}
+  .promo-enrollment-art{min-height:0;aspect-ratio:16/9;padding:32px 28px}
+  .promo-enrollment-art strong{font-size:clamp(4rem,14vw,6rem)}
+  .promo-carousel-button{width:44px;height:44px;font-size:28px}
+  .promo-carousel-dots button{min-width:12px;min-height:12px}
+  .promo-carousel-dots button.is-active{width:30px}
+}
+
+@media(max-width:520px){
+  .construction-page{padding-right:max(14px,env(safe-area-inset-right));padding-left:max(14px,env(safe-area-inset-left))}
+  .construction-brand{gap:8px;min-width:0}
+  .construction-brand img{width:42px;height:42px;flex:0 0 42px}
+  .construction-brand span{min-width:0}
+  .construction-brand em{font-size:7px;letter-spacing:.13em;white-space:nowrap}
+  .construction-brand strong{font-size:18px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .construction-hero{gap:30px;padding:40px 0 38px}
+  .eyebrow{margin-bottom:16px;font-size:9px;letter-spacing:.13em}
+  h1{font-size:clamp(3rem,15.5vw,4.4rem);letter-spacing:-.06em}
+  .construction-lead{margin:22px 0 26px;font-size:15px;line-height:1.65}
+  .construction-actions{display:grid;grid-template-columns:1fr;gap:10px}
+  .button{width:100%;min-height:48px}
+  .construction-visual{aspect-ratio:1/1.08;border-radius:24px}
+  .visual-frame{inset:11px;border-radius:19px}
+  .visual-caption{left:20px;right:20px;bottom:20px}
+  .visual-caption strong{font-size:1.35rem}
+  .visual-note-one{right:10%;top:10%}
+  .visual-note-two{right:6%;top:23%}
+  .promo-carousel{margin-top:20px}
+  .promo-carousel-window{border-radius:18px}
+  .promo-slide-image{aspect-ratio:4/3;padding:12px}
+  .promo-slide-copy{padding:26px 20px 28px}
+  .promo-slide-copy h3{margin:11px 0;font-size:clamp(2rem,10vw,2.65rem)}
+  .promo-slide-copy p{margin-bottom:22px;font-size:14px;line-height:1.62}
+  .promo-enrollment-art{aspect-ratio:4/3;padding:26px 22px}
+  .promo-enrollment-art strong{font-size:clamp(4rem,21vw,5.5rem)}
+  .promo-carousel-controls{gap:13px;margin-top:16px}
+  .construction-footer{justify-content:center;padding-top:16px;text-align:center;font-size:9px}
+}
+
+@media(max-width:360px){
+  .construction-brand em{display:none}
+  .construction-brand strong{font-size:17px}
+  h1{font-size:2.85rem}
+  .construction-visual{aspect-ratio:1/1.15}
+  .promo-slide-copy{padding-inline:17px}
+}
+
+@media(hover:none){
+  .button:hover{transform:none}
+  .promo-carousel-button{min-width:44px;min-height:44px}
+}
+
+@media(max-width:760px) and (orientation:landscape){
+  .construction-page{padding-block:max(12px,env(safe-area-inset-top)) max(16px,env(safe-area-inset-bottom))}
+  .construction-hero{grid-template-columns:minmax(0,1fr) minmax(280px,.8fr);gap:28px;padding:32px 0 38px}
+  .construction-copy{align-self:center}
+  h1{font-size:clamp(3rem,7.5vw,4.5rem)}
+  .construction-lead{margin:18px 0 22px;font-size:14px;line-height:1.55}
+  .construction-actions{display:flex}
+  .construction-actions .button{width:auto}
+  .construction-visual{aspect-ratio:4/3;min-height:280px}
+}
+
+/* La papeleta debe conservar toda su proporción en pantallas estrechas. */
+@media(max-width:760px){
+  .promo-slide-image{aspect-ratio:auto}
+  .promo-slide-image img{height:auto;object-fit:contain}
+}
